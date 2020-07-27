@@ -1,4 +1,8 @@
-sudo mv /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo SKIP_WARNING=1 rpi-update
+sudo apt-get install lighttpd usbmount
+#sudo mv /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
 sudo wget http://downloads.fars-robotics.net/wifi-drivers/install-wifi -O /usr/bin/install-wifi
 sudo chmod +x /usr/bin/install-wifi
 sudo install-wifi

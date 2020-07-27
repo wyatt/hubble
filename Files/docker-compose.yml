@@ -1,0 +1,15 @@
+version: '3'
+services:
+  nextcloud:
+    image: ownyourbits/nextcloudpi
+    command: "192.168.1.211"
+    ports:
+     - "8080:80"
+     - "443:443"
+     - "4443:4443"
+    volumes:
+     - /home/pi/ncdata:/data
+     - /media/usb0:/media/usb0
+     - /media/usb1:/media/usb1
+     - /etc/localtime:/etc/localtime:ro
+    container_name: nextcloudpi
