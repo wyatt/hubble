@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hubble Dashboard</title>
+    <link rel="stylesheet" href="css.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <div id="particles"></div>
+    <div id="container">
+      <div id="inner-container">
+        <div>
+          <h1 id="welcome"></h1>
+        </div>
+        <div id="icons">
+          <div id="wifi" class="icon">
+            <a href="/wifi">
+              <i data-feather="wifi">WiFi</i>
+            </a>
+          </div>
+          <div id="folder" class="icon">
+            <a href="#">
+              <i data-feather="folder">WiFi</i>
+            </a>
+          </div>
+          <div id="corner-right-up" class="icon">
+            <a href="#">
+              <i data-feather="corner-right-up">WiFi</i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    feather.replace();
+    particlesJS.load("particles", "particles.json");
+    const name = "Wyatt";
+    const getTime = () => {
+      const hour = new Date().getHours();
+      if (hour >= 4 && hour <= 11) return "morning";
+      if (hour >= 12 && hour <= 16) return "afternoon";
+      if (hour >= 17) return "evening";
+    };
+    document.getElementById("welcome").innerHTML = `Good ${getTime()}, ${name}`;
+    const test = (color) => {
+      $.each(pJSDom[0].pJS.particles.array, (i, p) => {
+        pJSDom[0].pJS.particles.array[i].color.value = color;
+        pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color);
+        pJSDom[0].pJS.particles.line_linked.color_rgb_line = hexToRgb(color);
+      });
+    };
+    $("#corner-right-up").hover(
+      () => {
+        test("#80e27e");
+      },
+      () => {
+        test("#000000");
+      },
+    );
+    $("#folder").hover(
+      () => {
+        test("#6ec6ff");
+      },
+      () => {
+        test("#000000");
+      },
+    );
+    $("#wifi").hover(
+      () => {
+        test("#ff7961");
+      },
+      () => {
+        test("#000000");
+      },
+    );
+  </script>
+</html>
