@@ -1,0 +1,3 @@
+sudo sed -i "s/IPV4_ADDRESS=.*/IPV4_ADDRESS=<ipaddr>/g" /etc/pihole/setupVars.conf
+sudo sed -i "s|${IP}|<ipaddr>|g" /etc/dhcpcd.conf
+sudo sed -i "s|${ROUTERIP}|<routeripaddr>|g" /etc/dhcpcd.conf

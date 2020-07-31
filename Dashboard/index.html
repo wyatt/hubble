@@ -3,34 +3,81 @@
   <head>
     <title>Hubble Dashboard</title>
     <link rel="stylesheet" href="css.css" />
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="js/feather.min.js"></script>
+    <script src="js/particles.min.js"></script>
+    <script src="js/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
     <div id="particles"></div>
     <div id="container">
       <div id="inner-container">
-        <div>
-          <h1 id="welcome"></h1>
+        <div id="page1">
+          <div>
+            <h1 id="welcome"></h1>
+          </div>
+          <div id="icons">
+            <div id="wifi" class="icon">
+              <a href="/wifi/">
+                <i data-feather="wifi">WiFi</i>
+              </a>
+            </div>
+            <div id="folder" class="icon">
+              <a href="#">
+                <i data-feather="folder">Files</i>
+              </a>
+            </div>
+            <div id="corner-right-up" class="icon">
+              <a href="/admin/">
+                <i data-feather="corner-right-up">DNS</i>
+              </a>
+            </div>
+            <div id="settings" class="icon" onclick="settings()">
+              <!-- <a href="#"> -->
+              <i data-feather="settings">Settings</i>
+              <!-- </a> -->
+            </div>
+          </div>
         </div>
-        <div id="icons">
-          <div id="wifi" class="icon">
-            <a href="/wifi">
-              <i data-feather="wifi">WiFi</i>
-            </a>
+        <div id="page2">
+          <h1>Settings</h1>
+          <div id="icons-settings">
+            <div id="adapter" class="icon">
+              <i data-feather="rss">Change wifi adapter</i>
+            </div>
+            <div id="terminal" class="icon">
+              <a id="shellinabox" port=":4200">
+                <i data-feather="terminal">Terminal</i>
+              </a>
+            </div>
           </div>
-          <div id="folder" class="icon">
-            <a href="#">
-              <i data-feather="folder">WiFi</i>
-            </a>
-          </div>
-          <div id="corner-right-up" class="icon">
-            <a href="#">
-              <i data-feather="corner-right-up">WiFi</i>
-            </a>
-          </div>
+          <form>
+            <div id="text-fields">
+              <label for="name">Name:</label>
+              <input type="text" name="name" id="name" placeholder="Wyatt" />
+              <label for="hostname">Hostname:</label>
+              <input type="text" name="hostname" id="hostname" placeholder="hubble" />
+            </div>
+            <div id="radio-title">
+              <h1>Interface</h1>
+            </div>
+            <div id="interface-div">
+              <div id="radio-div">
+                <div class="radio">
+                  <input type="radio" id="wireless" name="interface" value="wireless" checked />
+                  <label for="wireless">Wireless (wlan0)</label>
+                </div>
+                <div class="radio">
+                  <input type="radio" id="wired" name="interface" value="wired" />
+                  <label for="wired">Wired (eth0)</label>
+                </div>
+              </div>
+            </div>
+            <div id="buttons">
+              <button onclick='settings("back")' class="button">Back</button>
+              <input type="submit" value="Save" class="button" id="submit" />
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -45,7 +92,20 @@
       if (hour >= 12 && hour <= 16) return "afternoon";
       if (hour >= 17) return "evening";
     };
+    const settings = (value) => {
+      if (value == "back") {
+        console.log("ooo");
+        document.getElementById("page1").style.display = "flex";
+        document.getElementById("page2").style.display = "none";
+      } else {
+        document.getElementById("page1").style.display = "none";
+        document.getElementById("page2").style.display = "flex";
+      }
+    };
     document.getElementById("welcome").innerHTML = `Good ${getTime()}, ${name}`;
+    const port = document.getElementById("shellinabox").getAttribute("port");
+    document.getElementById("shellinabox").href = "" + window.location.origin + port;
+    console.log("" + window.location.origin + port);
     const test = (color) => {
       $.each(pJSDom[0].pJS.particles.array, (i, p) => {
         pJSDom[0].pJS.particles.array[i].color.value = color;
@@ -72,6 +132,22 @@
     $("#wifi").hover(
       () => {
         test("#ff7961");
+      },
+      () => {
+        test("#000000");
+      },
+    );
+    $("#settings").hover(
+      () => {
+        test("#fff350");
+      },
+      () => {
+        test("#000000");
+      },
+    );
+    $("#submit").hover(
+      () => {
+        test("#c79100");
       },
       () => {
         test("#000000");
