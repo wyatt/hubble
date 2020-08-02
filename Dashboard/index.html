@@ -106,7 +106,7 @@
       let hostname = postData[1].value;
       let iface = postData[2].value;
       if (hostname === info.hostname) hostname = "";
-      if (name == info.name) name = "";
+      if (!name) name = info.name;
       if (iface !== info.iface || hostname) {
         if (
           /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(
