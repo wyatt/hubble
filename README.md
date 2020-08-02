@@ -1,5 +1,5 @@
-# 🌐 netWORK
-### Super simple guest wifi, network protection and file sharing
+# 🌐 hubble
+### Super simple restricted wifi, adblocking and file sharing
 
 
 
