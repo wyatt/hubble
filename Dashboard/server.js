@@ -73,8 +73,7 @@ const hostnamechange = (hostname) => {
     statuses.push(false);
   }
   let command = shell.exec(`changehostname ${hostname}`, { silent: true });
-  console.log(command);
-  if (command) {
+  if (command.code === 0) {
     console.log(`Changed hostname to ${hostname}`);
     statuses.push(true);
   } else statuses.push(false);
@@ -83,7 +82,7 @@ const hostnamechange = (hostname) => {
 const ifacechange = (interface) => {
   console.log(`Changing interface to ${interface}`);
   let command = shell.exec(`changeinterface ${interface}`, { silent: true });
-  if (command) {
+  if (command.code === 0) {
     console.log(`Changed interface to ${interface}`);
     statuses.push(true);
   } else statuses.push(false);
