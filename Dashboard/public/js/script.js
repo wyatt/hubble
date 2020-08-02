@@ -39,35 +39,10 @@ const terminal = () => {
 //Change adapter
 const adapter = () => {
   window.alert(
-    "⚠ This device will now shutdown. Once the device is shutdown, change adapters and turn the plug on and off. If the adapter is supported, it should be working!",
+    "⚠ This device will now shutdown. Once the device is shutdown, change adapters and turn the plug on and off. The driver will then be installed and the device will reboot. Then, if the adapter is supported, everything should be working!",
   );
   $.post("/adapter");
 };
-
-//Interface sette
-
-//Form submit
-// $("#settings-form").submit(function (e) {
-//   console.log("detected");
-//   let postData = $(this).serializeArray();
-//   let name = postData[0].value;
-//   let hostname = postData[1].value;
-//   let iface = postData[2].value;
-//   if (hostname === info.hostname) hostname = "";
-//   if (name == info.name) name = "";
-//   if (iface !== info.iface || hostname) {
-//     let reboot = window.confirm("One or more of the settings you changed will cause the device to reboot. Continue?");
-//     if (reboot) submit(postData);
-//   } else if (iface === info.iface && !hostname && !name) {
-//     e.preventDefault();
-//     return;
-//   } else {
-//     submit(postData);
-//     $("#name").attr("placeholder", name);
-//     welcome(name);
-//   }
-//   e.preventDefault();
-// });
 
 const submit = (postData) => {
   $("input[type='submit']").val("Saving");

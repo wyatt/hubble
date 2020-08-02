@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if test $# -eq 0
+then
+    exit 1
+fi
+
+CHOST=$(hostname)
+NHOST=$1
+
+echo $NHOST | sudo tee /etc/hostname > /dev/null && sudo sed -i "s/${CHOST}/${NHOST}/g" /etc/hosts

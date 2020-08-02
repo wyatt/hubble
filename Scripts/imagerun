@@ -4,6 +4,9 @@
 IP=$(ip -o -f inet addr show dev wlan0 | awk '/scope global/ {print $4}')
 ROUTERIP=$(ip route show | grep -i 'default via'| awk '{print $3}')
 
+#Git
+#git clone
+
 echo "Updating software"
 echo "-----------------"
 sudo apt-get update -y

@@ -1,7 +1,11 @@
+#!/bin/bash
+
 sudo pihole disable
+
 sudo sed -i "s/IPV4_ADDRESS=.*/IPV4_ADDRESS=<ipaddr>/g" /etc/pihole/setupVars.conf
 sudo sed -i "s|${IP}|<ipaddr>|g" /etc/dhcpcd.conf
 sudo sed -i "s|${ROUTERIP}|<routeripaddr>|g" /etc/dhcpcd.conf
+
 if [ $1 == "eth0" ]
 then
 	sudo sed -i "s|wlan0|eth0|g" /etc/dhcpcd.conf

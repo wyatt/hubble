@@ -1,0 +1,5 @@
+#!/bin/bash
+sudo crontab -l > /tmp/newcrontab
+echo "@reboot sudo installdongle" >> /tmp/newcrontab
+sudo crontab /tmp/newcrontab
+sudo rm /tmp/newcrontab
