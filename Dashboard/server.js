@@ -79,12 +79,15 @@ const hostnamechange = (hostname) => {
 
 const ifacechange = (interface) => {
   console.log(`Changing interface to ${interface}`);
-  statuses.push(true);
+  if (shell.exec(`changeinterface ${interface}`, { silent: true })) statuses.push(true);
+  else statuses.push(false);
 };
 
 const reboot = () => {
   console.log("Rebooting...");
+  shell.exec("sudo reboot", { silent: true });
 };
+
 const port = 8080;
 app.listen(port);
 console.log(`Running at Port ${port}`);
