@@ -76,7 +76,9 @@ const hostnamechange = (hostname) => {
   if (command.code === 0) {
     console.log(`Changed hostname to ${hostname}`);
     statuses.push(true);
-  } else statuses.push(false);
+  } else {
+    statuses.push(false);
+  }
 };
 
 const ifacechange = (interface) => {
