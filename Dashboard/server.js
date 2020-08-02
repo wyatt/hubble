@@ -46,7 +46,7 @@ app.post("/savesettings", function (req, res) {
     res.sendStatus(500);
   } else {
     res.sendStatus(200);
-    if (req.name === properties.name && !req.name) {
+    if (req.name === properties.name || !req.name) {
       reboot();
     }
   }
@@ -73,14 +73,20 @@ const hostnamechange = (hostname) => {
     statuses.push(false);
   }
   let command = shell.exec(`changehostname ${hostname}`, { silent: true }).stdout;
-  if (command) statuses.push(true);
-  else statuses.push(false);
+  console.log(command);
+  if (command) {
+    console.log(`Changed hostname to ${hostname}`);
+    statuses.push(true);
+  } else statuses.push(false);
 };
 
 const ifacechange = (interface) => {
+  console.log(`Changing interface to ${interface}`);
   let command = shell.exec(`changeinterface ${interface}`, { silent: true });
-  if (command) statuses.push(true);
-  else statuses.push(false);
+  if (command) {
+    console.log(`Changed interface to ${interface}`);
+    statuses.push(true);
+  } else statuses.push(false);
 };
 
 const reboot = () => {
