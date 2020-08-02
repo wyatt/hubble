@@ -1,11 +1,14 @@
 const path = require("path");
+const fs = require("fs");
 const express = require("express");
 const app = express();
 const shell = require("shelljs");
 const multer = require("multer");
 const upload = multer();
 
-const name = "Wyatt";
+const namefile = require("./name.json");
+let name = namefile.name;
+
 let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/(\r\n)/g, "");
 let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout;
 
@@ -41,18 +44,35 @@ app.post("/savesettings", function (req, res) {
     res.sendStatus(500);
   } else {
     res.sendStatus(200);
-    reboot();
+    if (req.name === properties.name && !req.name) {
+      reboot();
+    }
   }
 });
 
-const namechange = (name) => {
-  console.log(`Changing name to ${name}`);
+const namechange = (newname) => {
+  console.log(`Changing name to ${newname}`);
+  namefile.name = newname;
+  name = newname;
+  fs.writeFile("./name.json", JSON.stringify(namefile), (err) => {
+    if (err) statuses.push(false);
+    else console.log(`Changed name to ${newname}`);
+  });
   statuses.push(true);
 };
 
 const hostnamechange = (hostname) => {
   console.log(`Changing hostname to ${hostname}`);
-  statuses.push(true);
+  if (
+    /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(
+      hostname,
+    )
+  ) {
+    statuses.push(false);
+  }
+  let command = shell.exec(`changehostname ${hostname}`, { silent: true }).stdout;
+
+  statuses.push(command);
 };
 
 const ifacechange = (interface) => {
