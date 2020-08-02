@@ -73,13 +73,13 @@ const hostnamechange = (hostname) => {
     statuses.push(false);
   }
   let command = shell.exec(`changehostname ${hostname}`, { silent: true }).stdout;
-
-  statuses.push(command);
+  if (command) statuses.push(true);
+  else statuses.push(false);
 };
 
 const ifacechange = (interface) => {
-  console.log(`Changing interface to ${interface}`);
-  if (shell.exec(`changeinterface ${interface}`, { silent: true })) statuses.push(true);
+  let command = shell.exec(`changeinterface ${interface}`, { silent: true });
+  if (command) statuses.push(true);
   else statuses.push(false);
 };
 
