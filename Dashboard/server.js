@@ -12,8 +12,6 @@ let name = namefile.name;
 let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/[\r\n]/g, "");
 let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout;
 
-console.log(hostname);
-
 if (iface !== "wlan0" || iface !== "eth0") {
   iface = "eth0";
 }
@@ -42,7 +40,6 @@ app.post("/savesettings", function (req, res) {
   if (req.name !== properties.name && req.name) namechange(req.name);
   if (req.hostname !== properties.hostname && req.hostname) hostnamechange(req.hostname);
   if (req.iface !== properties.iface && req.iface) ifacechange(req.iface);
-  console.log(statuses);
   if (statuses.includes(false)) {
     res.sendStatus(500);
   } else {
@@ -71,12 +68,13 @@ const hostnamechange = (hostname) => {
       hostname,
     )
   ) {
-    statuses.push(false);
-  }
-  let command = shell.exec(`changehostname ${hostname}`, { silent: true });
-  if (command.code === 0) {
-    console.log(`Changed hostname to ${hostname}`);
-    statuses.push(true);
+    let command = shell.exec(`changehostname ${hostname}`, { silent: true });
+    if (command.code === 0) {
+      console.log(`Changed hostname to ${hostname}`);
+      statuses.push(true);
+    } else {
+      statuses.push(false);
+    }
   } else {
     statuses.push(false);
   }
