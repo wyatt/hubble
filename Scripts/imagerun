@@ -4,8 +4,10 @@
 IP=$(ip -o -f inet addr show dev wlan0 | awk '/scope global/ {print $4}')
 ROUTERIP=$(ip route show | grep -i 'default via'| awk '{print $3}')
 
-#Git
-#git clone
+#Add scripts
+#Following git clone
+sudo chmod +x ~/hubble/Scripts/*
+sudo mv ~/hubble/Scripts/* /usr/bin/
 
 echo "Updating software"
 echo "-----------------"
@@ -26,8 +28,8 @@ curl -sL https://install.raspap.com | bash -s -- -r profwyattb/raspap-webgui -b 
 networkingpath=$(php -r 'require_once "/var/www/html/wifi/includes/config.php"; echo RASPI_CONFIG_NETWORKING;')
 raspappath=$(php -r 'require_once "/var/www/html/wifi/includes/config.php"; echo RASPI_CONFIG;')
 sudo sed -i 's/\/app\/img\/wifi-qr-code.php/app\/img\/wifi-qr-code.php/' /var/www/html/guestwifi/templates/hostapd.php
-sudo cp config/wlan1.ini ${networkingpath}/wlan1
-sudo cp config/raspap-hostapd.ini ${raspappath}/hostapd.ini
+sudo cp ../Wifi/config/wlan1.ini ${networkingpath}/wlan1
+sudo cp ../Wifi/config/raspap-hostapd.ini ${raspappath}/hostapd.ini
 sudo service hostapd restart
 sudo service raspap restart
 #sudo mv /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
@@ -47,3 +49,5 @@ sudo sed -i "s/IPV4_ADDRESS=.*/IPV4_ADDRESS=<ipaddr>/g" /etc/pihole/setupVars.co
 sudo sed -i "s|${IP}|<ipaddr>|g" /etc/dhcpcd.conf
 sudo sed -i "s|${ROUTERIP}|<routeripaddr>|g" /etc/dhcpcd.conf
 #Change hostname
+changehostname hubble
+#Move webdir
