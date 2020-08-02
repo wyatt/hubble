@@ -9,8 +9,10 @@ const upload = multer();
 const namefile = require("./name.json");
 let name = namefile.name;
 
-let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/(\r\n)/g, "");
+let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/\r\n/g, "");
 let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout;
+
+console.log(hostname);
 
 if (iface !== "wlan0" || iface !== "eth0") {
   iface = "eth0";
@@ -27,7 +29,7 @@ app.use(express.static("public"));
 
 app.engine("html", require("ejs").renderFile);
 
-app.get("/dashboard", function (req, res) {
+app.get("/", function (req, res) {
   res.render(path.join(__dirname + "/index.html"), { name, hostname, iface });
 });
 
