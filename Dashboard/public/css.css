@@ -5,6 +5,7 @@ body {
   height: 100%;
   width: 100%;
   font-family: "Roboto", sans-serif;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 #container {
@@ -24,6 +25,10 @@ body {
           flex-direction: column;
 }
 
+#particles {
+  display: block;
+}
+
 #inner-container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -41,8 +46,8 @@ body {
   padding: 1.5vh;
   background-color: white;
   border-radius: 20px;
-  -webkit-box-shadow: 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12), 0 7px 8px -4px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 12px 17px 2px rgba(0, 0, 0, 0.14), 0 5px 22px 4px rgba(0, 0, 0, 0.12), 0 7px 8px -4px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 canvas {
@@ -109,8 +114,6 @@ canvas {
   width: 8vh;
   border-radius: 20px;
   margin: 1.5vh;
-  -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
   -webkit-transition: ease 0.5s 0.1s;
   transition: ease 0.5s 0.1s;
 }
@@ -228,16 +231,11 @@ form {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  margin: 10px 0px 0px 0px;
-}
-
-#text-fields label {
-  margin: 5px;
+  margin: 10px 0px;
 }
 
 label {
   font-size: 2.5vh;
-  opacity: 0.5;
 }
 
 input[type="text"] {
@@ -245,7 +243,7 @@ input[type="text"] {
   width: 92%;
   height: 2vw;
   border: none;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 1% 4%;
   font-size: 2vh;
 }
@@ -273,6 +271,7 @@ input[type="text"]:focus {
   height: 2.5vw;
   border: none;
   font-size: 2vh;
+  color: rgba(0, 0, 0, 0.5);
   background-color: rgba(0, 0, 0, 0.1);
   cursor: pointer;
   -webkit-transition: ease 0.3s;
@@ -291,6 +290,8 @@ input[type="text"]:focus {
 #buttons input[type="submit"] {
   background-color: #c79100;
   color: white;
+  -webkit-transition: ease 0.3s;
+  transition: ease 0.3s;
 }
 
 #text-fields {
@@ -306,6 +307,10 @@ input[type="text"]:focus {
           flex-direction: column;
   width: 25vw;
   height: 100%;
+}
+
+#text-fields label {
+  margin: 10px 0px 5px 0px;
 }
 
 #radio-div {
@@ -383,9 +388,6 @@ legend {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -393,6 +395,7 @@ legend {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  width: 100%;
 }
 
 #icons-settings .icon {
@@ -408,9 +411,7 @@ legend {
   height: 6vh;
   width: 6vh;
   border-radius: 20px;
-  margin: 1vh;
-  -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+  margin: 1.5vh;
   -webkit-transition: ease 0.5s 0.1s;
   transition: ease 0.5s 0.1s;
 }
@@ -418,5 +419,42 @@ legend {
 #icons-settings .icon:hover {
   -webkit-transform: scale(0.8);
           transform: scale(0.8);
+}
+
+.icon-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-bottom: 1vh;
+}
+
+p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.settings-icon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 0px 15px;
+  text-align: center;
 }
 /*# sourceMappingURL=css.css.map */

@@ -6,6 +6,7 @@
     <script src="js/feather.min.js"></script>
     <script src="js/particles.min.js"></script>
     <script src="js/jquery.min.js"></script>
+    <script src="js/script.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
@@ -17,46 +18,60 @@
             <h1 id="welcome"></h1>
           </div>
           <div id="icons">
-            <div id="wifi" class="icon">
-              <a href="/wifi/">
-                <i data-feather="wifi">WiFi</i>
-              </a>
+            <div class="icon-container">
+              <div id="wifi" class="icon">
+                <a href="/wifi/">
+                  <i data-feather="wifi">WiFi</i>
+                </a>
+              </div>
+              <p>WiFi</p>
             </div>
-            <div id="folder" class="icon">
-              <a href="#">
-                <i data-feather="folder">Files</i>
-              </a>
+            <div class="icon-container">
+              <div id="folder" class="icon">
+                <a href="#">
+                  <i data-feather="folder">Files</i>
+                </a>
+              </div>
+              <p>Files</p>
             </div>
-            <div id="corner-right-up" class="icon">
-              <a href="/admin/">
-                <i data-feather="corner-right-up">DNS</i>
-              </a>
+            <div class="icon-container">
+              <div id="corner-right-up" class="icon">
+                <a href="/admin/">
+                  <i data-feather="corner-right-up">DNS</i>
+                </a>
+              </div>
+              <p>DNS</p>
             </div>
-            <div id="settings" class="icon" onclick="settings()">
-              <!-- <a href="#"> -->
-              <i data-feather="settings">Settings</i>
-              <!-- </a> -->
+            <div class="icon-container">
+              <div id="settings" class="icon" onclick="settings()">
+                <i data-feather="settings">Settings</i>
+              </div>
+              <p>Settings</p>
             </div>
           </div>
         </div>
         <div id="page2">
           <h1>Settings</h1>
           <div id="icons-settings">
-            <div id="adapter" class="icon">
-              <i data-feather="rss">Change wifi adapter</i>
+            <div class="settings-icon">
+              <div title="Change wifi adapter" id="adapter" class="icon" onclick="adapter()">
+                <i data-feather="rss"></i>
+              </div>
+              <p>Change wifi <br />adapter</p>
             </div>
-            <div id="terminal" class="icon">
-              <a id="shellinabox" port=":4200">
+            <div class="settings-icon">
+              <div title="Terminal session" id="terminal" class="icon" onclick="terminal()" port=":4200">
                 <i data-feather="terminal">Terminal</i>
-              </a>
+              </div>
+              <p>Terminal</p>
             </div>
           </div>
-          <form>
+          <form id="settings-form">
             <div id="text-fields">
               <label for="name">Name:</label>
-              <input type="text" name="name" id="name" placeholder="Wyatt" />
+              <input type="text" name="name" id="name" placeholder="<%= name %>" />
               <label for="hostname">Hostname:</label>
-              <input type="text" name="hostname" id="hostname" placeholder="hubble" />
+              <input type="text" name="hostname" id="hostname" placeholder="<%= hostname %>" />
             </div>
             <div id="radio-title">
               <h1>Interface</h1>
@@ -64,17 +79,17 @@
             <div id="interface-div">
               <div id="radio-div">
                 <div class="radio">
-                  <input type="radio" id="wireless" name="interface" value="wireless" checked />
+                  <input type="radio" id="wireless" name="interface" value="wlan0" />
                   <label for="wireless">Wireless (wlan0)</label>
                 </div>
                 <div class="radio">
-                  <input type="radio" id="wired" name="interface" value="wired" />
+                  <input type="radio" id="wired" name="interface" value="eth0" />
                   <label for="wired">Wired (eth0)</label>
                 </div>
               </div>
             </div>
             <div id="buttons">
-              <button onclick='settings("back")' class="button">Back</button>
+              <button onclick='settings("back")' class="button" type="button">Back</button>
               <input type="submit" value="Save" class="button" id="submit" />
             </div>
           </form>
@@ -83,30 +98,45 @@
     </div>
   </body>
   <script>
-    feather.replace();
-    particlesJS.load("particles", "particles.json");
-    const name = "Wyatt";
-    const getTime = () => {
-      const hour = new Date().getHours();
-      if (hour >= 4 && hour <= 11) return "morning";
-      if (hour >= 12 && hour <= 16) return "afternoon";
-      if (hour >= 17) return "evening";
-    };
-    const settings = (value) => {
-      if (value == "back") {
-        console.log("ooo");
-        document.getElementById("page1").style.display = "flex";
-        document.getElementById("page2").style.display = "none";
+    window.info = JSON.parse('{"name": "<%= name %>", "hostname": "<%= hostname %>", "iface": "<%= iface %>"}');
+    $("#settings-form").submit(function (e) {
+      e.preventDefault();
+      let postData = $(this).serializeArray();
+      let name = postData[0].value;
+      let hostname = postData[1].value;
+      let iface = postData[2].value;
+      if (hostname === info.hostname) hostname = "";
+      if (name == info.name) name = "";
+      if (iface !== info.iface || hostname) {
+        if (
+          /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(
+            hostname,
+          ) ||
+          !hostname
+        ) {
+          let reboot = window.confirm(
+            "One or more of the settings you changed will cause the device to reboot. Continue?",
+          );
+          if (reboot) {
+            submit(postData);
+          } else {
+            $("#settings-form").trigger("reset");
+          }
+        } else {
+          window.alert("Illegal character detected in hostname field. Please ammend");
+        }
+      } else if (iface === info.iface && !hostname && !name) {
+        e.preventDefault();
+        return;
       } else {
-        document.getElementById("page1").style.display = "none";
-        document.getElementById("page2").style.display = "flex";
+        submit(postData);
+        $("#name").attr("placeholder", name);
+        welcome(name);
       }
-    };
-    document.getElementById("welcome").innerHTML = `Good ${getTime()}, ${name}`;
-    const port = document.getElementById("shellinabox").getAttribute("port");
-    document.getElementById("shellinabox").href = "" + window.location.origin + port;
-    console.log("" + window.location.origin + port);
-    const test = (color) => {
+      e.preventDefault();
+    });
+    //Particle color change
+    const colorchange = (color) => {
       $.each(pJSDom[0].pJS.particles.array, (i, p) => {
         pJSDom[0].pJS.particles.array[i].color.value = color;
         pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color);
@@ -115,42 +145,58 @@
     };
     $("#corner-right-up").hover(
       () => {
-        test("#80e27e");
+        colorchange("#80e27e");
       },
       () => {
-        test("#000000");
+        colorchange("#000000");
       },
     );
     $("#folder").hover(
       () => {
-        test("#6ec6ff");
+        colorchange("#6ec6ff");
       },
       () => {
-        test("#000000");
+        colorchange("#000000");
       },
     );
     $("#wifi").hover(
       () => {
-        test("#ff7961");
+        colorchange("#ff7961");
       },
       () => {
-        test("#000000");
+        colorchange("#000000");
       },
     );
     $("#settings").hover(
       () => {
-        test("#fff350");
+        colorchange("#c79100");
       },
       () => {
-        test("#000000");
+        colorchange("#000000");
       },
     );
     $("#submit").hover(
       () => {
-        test("#c79100");
+        colorchange("#c79100");
       },
       () => {
-        test("#000000");
+        colorchange("#000000");
+      },
+    );
+    $("#adapter").hover(
+      () => {
+        colorchange("#9162e4");
+      },
+      () => {
+        colorchange("#000000");
+      },
+    );
+    $("#terminal").hover(
+      () => {
+        colorchange("#ff844c");
+      },
+      () => {
+        colorchange("#000000");
       },
     );
   </script>
