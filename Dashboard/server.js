@@ -72,7 +72,7 @@ const hostnamechange = (hostname) => {
   ) {
     statuses.push(false);
   }
-  let command = shell.exec(`changehostname ${hostname}`, { silent: true }).stdout;
+  let command = shell.exec(`changehostname ${hostname}`, { silent: true });
   console.log(command);
   if (command) {
     console.log(`Changed hostname to ${hostname}`);
