@@ -27,7 +27,7 @@ app.use(express.static("public"));
 
 app.engine("html", require("ejs").renderFile);
 
-app.get("/", function (req, res) {
+app.get("/dashboard", function (req, res) {
   res.render(path.join(__dirname + "/index.html"), { name, hostname, iface });
 });
 
