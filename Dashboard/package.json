@@ -7,5 +7,12 @@
     "pm2": "^4.4.0",
     "shelljs": "^0.8.4",
     "tailwindcss": "^1.6.0"
-  }
+  },
+  "name": "hubble",
+  "version": "1.0.0",
+  "description": "Super simple restricted wifi, adblocking and file sharing",
+  "main": "server.js",
+  "repository": "https://github.com/profwyattb/hubble",
+  "author": "Wyatt Sell",
+  "license": "MIT"
 }

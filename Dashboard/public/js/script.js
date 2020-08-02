@@ -39,7 +39,7 @@ const terminal = () => {
 //Change adapter
 const adapter = () => {
   window.alert(
-    "⚠ This device will now shutdown. Once the device is shutdown, change adapters and turn the plug on and off. The driver will then be installed and the device will reboot. Then, if the adapter is supported, everything should be working!",
+    "⚠ This device will now shutdown. Once the device is shutdown, change adapters and turn the plug on and off. The driver will then be installed and the device will reboot. Then, if the adapter is supported, everything pshould be working!",
   );
   $.post("/adapter");
 };

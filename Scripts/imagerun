@@ -8,10 +8,14 @@ ROUTERIP=$(ip route show | grep -i 'default via'| awk '{print $3}')
 #Following git clone
 sudo chmod +x ~/hubble/Scripts/*
 sudo mv ~/hubble/Scripts/* /usr/bin/
+sudo apt install nodejs -y
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update -y
+sudo apt install yarn -y
 
 echo "Updating software"
 echo "-----------------"
-sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo SKIP_WARNING=1 rpi-update
 sudo declare rs > /var/run/rebootstage
