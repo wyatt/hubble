@@ -42,6 +42,7 @@ app.post("/savesettings", function (req, res) {
   if (req.name !== properties.name && req.name) namechange(req.name);
   if (req.hostname !== properties.hostname && req.hostname) hostnamechange(req.hostname);
   if (req.iface !== properties.iface && req.iface) ifacechange(req.iface);
+  console.log(statuses);
   if (statuses.includes(false)) {
     res.sendStatus(500);
   } else {
