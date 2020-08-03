@@ -23,7 +23,7 @@ let statuses = [];
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(upload.array());
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname + "/public")));
 
 app.engine("html", require("ejs").renderFile);
 
