@@ -44,7 +44,7 @@ app.post("/savesettings", function (req, res) {
     res.sendStatus(500);
   } else {
     res.sendStatus(200);
-    if (req.name === properties.name || !req.name) {
+    if ((req.iface !== properties.iface && req.iface) || (req.hostname !== properties.hostname && req.hostname)) {
       reboot();
     }
   }

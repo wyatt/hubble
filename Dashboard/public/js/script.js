@@ -2,7 +2,7 @@ let info;
 
 $(document).ready(() => {
   feather.replace();
-  particlesJS.load("particles", "/dashboard/js/particles.json");
+  particlesJS.load("particles", "js/particles.json");
   info = window.info;
   $(`input[value=${info.iface}]`).attr("checked", true);
   welcome(info.name);
@@ -41,13 +41,13 @@ const adapter = () => {
   window.alert(
     "⚠ This device will now shutdown. Once the device is shutdown, change adapters and turn the plug on and off. The driver will then be installed and the device will reboot. Then, if the adapter is supported, everything pshould be working!",
   );
-  $.post("/dashboard/adapter");
+  $.post("adapter/");
 };
 
 const submit = (postData) => {
   $("input[type='submit']").val("Saving");
   $.ajax({
-    url: "/dashboard/savesettings",
+    url: "savesettings/",
     type: "POST",
     data: postData,
     success: () => {
