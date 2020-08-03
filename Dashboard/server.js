@@ -10,7 +10,7 @@ const namefile = require("./data/name.json");
 let name = namefile.name;
 
 let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/[\r\n]/g, "");
-let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout;
+let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout.replace(/[\r\n]/g, "");
 
 if (iface !== "wlan0" && iface !== "eth0") {
   iface = "eth0";
