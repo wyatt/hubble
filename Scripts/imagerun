@@ -24,6 +24,9 @@ sudo htpasswd -bc /etc/nginx/.htpasswd admin secret
 sudo chown -R www-data:www-data /var/www/html
 sudo chmod -R 755 /var/www/html
 sudo usermod -aG pihole www-data
+~/hubble/Dashboard/node_modules/.bin/pm2 startup systemd
+sudo env PATH=$PATH:/usr/bin /home/pi/hubble/Dashboard/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi
+~/hubble/Dashboard/node_modules/.bin/pm2 save
 
 echo "Updating software"
 echo "-----------------"
