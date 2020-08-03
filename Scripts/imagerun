@@ -15,6 +15,16 @@ sudo apt-get update -y
 sudo apt install yarn -y
 yarn install -cwd "~/hubble/Dashboard/"
 
+sudo apt-get -y install nginx php7.3-fpm php7.3-cgi php7.3-xml php7.3-sqlite3 php7.3-intl apache2-utils
+~/hubble/Dashboard/node_modules/.bin/pm2 start /home/pi/hubble/Dashboard/server.js
+sudo systemctl disable lighttpd
+sudo systemctl enable php7.3-fpm
+sudo systemctl enable nginx
+sudo htpasswd -bc /etc/nginx/.htpasswd admin secret
+sudo chown -R www-data:www-data /var/www/html
+sudo chmod -R 755 /var/www/html
+sudo usermod -aG pihole www-data
+
 echo "Updating software"
 echo "-----------------"
 sudo apt-get upgrade -y

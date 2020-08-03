@@ -6,7 +6,7 @@ const shell = require("shelljs");
 const multer = require("multer");
 const upload = multer();
 
-const namefile = require("./name.json");
+const namefile = require("./data/name.json");
 let name = namefile.name;
 
 let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/[\r\n]/g, "");
@@ -94,6 +94,6 @@ const reboot = () => {
   shell.exec("sudo reboot", { silent: true });
 };
 
-const port = 8080;
+const port = 1234;
 app.listen(port);
 console.log(`Running at Port ${port}`);

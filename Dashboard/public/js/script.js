@@ -2,7 +2,7 @@ let info;
 
 $(document).ready(() => {
   feather.replace();
-  particlesJS.load("particles", "particles.json");
+  particlesJS.load("particles", "/dashboard/js/particles.json");
   info = window.info;
   $(`input[value=${info.iface}]`).attr("checked", true);
   welcome(info.name);
