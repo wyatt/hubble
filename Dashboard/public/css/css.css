@@ -238,7 +238,8 @@ label {
   font-size: 2.5vh;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   border-radius: 20px;
   width: 92%;
   height: 2vw;
@@ -248,7 +249,8 @@ input[type="text"] {
   font-size: 2vh;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus,
+input[type="password"]:focus {
   outline: none;
 }
 
@@ -355,7 +357,8 @@ legend {
   #buttons .button {
     height: 10vw;
   }
-  input[type="text"] {
+  input[type="text"],
+  input[type="password"] {
     height: 10vw;
   }
 }
@@ -367,7 +370,8 @@ legend {
   #buttons .button {
     height: 6.5vw;
   }
-  input[type="text"] {
+  input[type="text"],
+  input[type="password"] {
     height: 6.5vw;
   }
 }
@@ -379,7 +383,8 @@ legend {
   #buttons .button {
     height: 4vw;
   }
-  input[type="text"] {
+  input[type="text"],
+  input[type="password"] {
     height: 4vw;
   }
 }

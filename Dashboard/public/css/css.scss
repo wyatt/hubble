@@ -152,7 +152,8 @@ form {
 label {
   font-size: 2.5vh;
 }
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   border-radius: $border;
   width: 92%;
   height: 2vw;
@@ -232,7 +233,8 @@ legend {
   #buttons .button {
     height: 10vw;
   }
-  input[type="text"] {
+  input[type="text"],
+  input[type="password"] {
     height: 10vw;
   }
 }
@@ -243,7 +245,8 @@ legend {
   #buttons .button {
     height: 6.5vw;
   }
-  input[type="text"] {
+  input[type="text"],
+  input[type="password"] {
     height: 6.5vw;
   }
 }
@@ -254,7 +257,8 @@ legend {
   #buttons .button {
     height: 4vw;
   }
-  input[type="text"] {
+  input[type="text"],
+  input[type="password"] {
     height: 4vw;
   }
 }

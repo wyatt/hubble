@@ -1,9 +1,21 @@
 #!/bin/bash
-IP=$(ip -o -f inet addr show dev wlan0 | awk '/scope global/ {print $4}')
+IP=$(ip route show | grep -i 'default via'| awk '{print $7}')
 ROUTERIP=$(ip route show | grep -i 'default via'| awk '{print $3}')
 
-sudo sed -i "s|<ipaddr>|${IP}|g" /etc/pihole/setupVars.conf
-sudo sed -i "s|<ipaddr>|${IP}|g" /etc/dhcpcd.conf
-sudo sed -i "s|<routeripaddr>|${ROUTERIP}|g" /etc/dhcpcd.conf
+APIP=$(ip -o -f inet addr show dev wlan1 | awk '/scope global/ {print $4}')
+APBLOCKIP=$(cat /etc/nginx/blockips.conf | grep -o -P '\d.*\d')
 
-sudo pihole enable
+if cat /etc/dhcpcd.conf | grep ipaddr
+then
+	sudo sed -i "s|<ipaddr>|${IP}|g" /etc/pihole/setupVars.conf
+	sudo sed -i "s|<ipaddr>|${IP}|g" /etc/dhcpcd.conf
+	sudo sed -i "s|<routeripaddr>|${ROUTERIP}|g" /etc/dhcpcd.conf
+	sudo pihole enable
+fi
+
+if [[ "$APIP"  != "$APBLOCKIP" ]]
+then
+	sudo sed -i "s/${APBLOCKIP}/${APIP}/g" /etc/nginx/blockips
+fi
+
+

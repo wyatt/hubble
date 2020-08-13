@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const shell = require("shelljs");
 const multer = require("multer");
+const bcrypt = require("bcrypt");
 const upload = multer();
 
 const namefile = require("./data/name.json");
@@ -12,9 +13,7 @@ let name = namefile.name;
 let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/[\r\n]/g, "");
 let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout.replace(/[\r\n]/g, "");
 
-if (iface !== "wlan0" && iface !== "eth0") {
-  iface = "eth0";
-}
+iface = "wlan0";
 
 const properties = { name, hostname, iface };
 
@@ -39,6 +38,7 @@ app.post("/savesettings", function (req, res) {
   req = req.body;
   if (req.name !== properties.name && req.name) namechange(req.name);
   if (req.hostname !== properties.hostname && req.hostname) hostnamechange(req.hostname);
+  if (req.password !== properties.password && req.password) passwordchange(req.password);
   if (req.iface !== properties.iface && req.iface) ifacechange(req.iface);
   if (statuses.includes(false)) {
     res.sendStatus(500);
@@ -55,10 +55,13 @@ const namechange = (newname) => {
   namefile.name = newname;
   name = newname;
   fs.writeFile("./name.json", JSON.stringify(namefile), (err) => {
-    if (err) statuses.push(false);
-    else console.log(`Changed name to ${newname}`);
+    if (err) {
+      statuses.push(false);
+    } else {
+      console.log(`Changed name to ${newname}`);
+      statuses.push(true);
+    }
   });
-  statuses.push(true);
 };
 
 const hostnamechange = (hostname) => {
@@ -78,6 +81,14 @@ const hostnamechange = (hostname) => {
   } else {
     statuses.push(false);
   }
+};
+
+const passwordchange = (password) => {
+  console.log(`Changing password to ${password}`);
+  let command = shell.exec(`changepassword "${password}"`, { silent: true });
+  // bcrypt.hash("secret", 8).then((password) => {
+  //   shell.exec(`sudo sed -i '2s/.*/${password}/' /etc/raspap/raspap.auth`);
+  // });
 };
 
 const ifacechange = (interface) => {

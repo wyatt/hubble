@@ -1,8 +1,9 @@
 #!/bin/bash
 
 #Variables
-IP=$(ip -o -f inet addr show dev wlan0 | awk '/scope global/ {print $4}')
+IP=$(ip route show | grep -i 'default via'| awk '{print $7}')
 ROUTERIP=$(ip route show | grep -i 'default via'| awk '{print $3}')
+intialpassword="secret"
 
 #Add scripts
 #Following git clone
@@ -14,19 +15,6 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 sudo apt-get update -y
 sudo apt install yarn -y
 yarn install -cwd "~/hubble/Dashboard/"
-
-sudo apt-get -y install nginx php7.3-fpm php7.3-cgi php7.3-xml php7.3-sqlite3 php7.3-intl apache2-utils
-~/hubble/Dashboard/node_modules/.bin/pm2 start /home/pi/hubble/Dashboard/server.js
-sudo systemctl disable lighttpd
-sudo systemctl enable php7.3-fpm
-sudo systemctl enable nginx
-sudo htpasswd -bc /etc/nginx/.htpasswd admin secret
-sudo chown -R www-data:www-data /var/www/html
-sudo chmod -R 755 /var/www/html
-sudo usermod -aG pihole www-data
-~/hubble/Dashboard/node_modules/.bin/pm2 startup systemd
-sudo env PATH=$PATH:/usr/bin /home/pi/hubble/Dashboard/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi
-~/hubble/Dashboard/node_modules/.bin/pm2 save
 
 echo "Updating software"
 echo "-----------------"
@@ -68,4 +56,18 @@ sudo sed -i "s|${IP}|<ipaddr>|g" /etc/dhcpcd.conf
 sudo sed -i "s|${ROUTERIP}|<routeripaddr>|g" /etc/dhcpcd.conf
 #Change hostname
 changehostname hubble
-#Move webdir
+#Install nginx
+sudo apt-get -y install nginx php7.3-fpm php7.3-cgi php7.3-xml php7.3-sqlite3 php7.3-intl apache2-utils
+~/hubble/Dashboard/node_modules/.bin/pm2 start /home/pi/hubble/Dashboard/server.js
+sudo systemctl disable lighttpd
+sudo systemctl enable php7.3-fpm
+sudo systemctl enable nginx
+#Need to copy nginx config -> /etc/nginx/sites-available/default
+#Need to copy blockips.conf -> /etc/nginx/blockips.conf
+sudo htpasswd -b -c /etc/nginx/.htpasswd admin $intialpassword
+sudo chown -R www-data:www-data /var/www/html
+sudo chmod -R 755 /var/www/html
+sudo usermod -aG pihole www-data
+~/hubble/Dashboard/node_modules/.bin/pm2 startup systemd
+sudo env PATH=$PATH:/usr/bin /home/pi/hubble/Dashboard/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi
+~/hubble/Dashboard/node_modules/.bin/pm2 save

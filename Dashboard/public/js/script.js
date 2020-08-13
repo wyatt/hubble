@@ -4,6 +4,7 @@ $(document).ready(() => {
   feather.replace();
   particlesJS.load("particles", "js/particles.json");
   info = window.info;
+  //$(`input[value=${info.iface}]`).attr("checked", true);
   $(`input[value=${info.iface}]`).attr("checked", true);
   welcome(info.name);
 });

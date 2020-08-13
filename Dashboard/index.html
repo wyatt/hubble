@@ -72,6 +72,8 @@
               <input type="text" name="name" id="name" placeholder="<%= name %>" />
               <label for="hostname">Hostname:</label>
               <input type="text" name="hostname" id="hostname" placeholder="<%= hostname %>" />
+              <label for="password">Universal password:</label>
+              <input type="password" name="password" id="password" placeholder="password" />
             </div>
             <div id="radio-title">
               <h1>Interface</h1>
@@ -104,7 +106,8 @@
       let postData = $(this).serializeArray();
       let name = postData[0].value;
       let hostname = postData[1].value;
-      let iface = postData[2].value;
+      let password = postData[2].value;
+      let iface = postData[3].value;
       if (hostname === window.info.hostname) hostname = "";
       if (!name) postData[0].value = window.info.name;
       if (iface !== window.info.iface || hostname) {
@@ -112,7 +115,7 @@
           /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(
             hostname,
           ) ||
-          !hostname
+          iface !== window.info.iface
         ) {
           let reboot = window.confirm(
             "One or more of the settings you changed will cause the device to reboot. Continue?",
@@ -125,7 +128,7 @@
         } else {
           window.alert("Illegal character detected in hostname field. Please ammend");
         }
-      } else if (iface === info.iface && !hostname && !name) {
+      } else if (iface === info.iface && !hostname && !name && !password) {
         e.preventDefault();
         return;
       } else {
