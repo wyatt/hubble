@@ -14,10 +14,8 @@
     <div id="container">
       <div id="inner-container">
         <div id="page1">
-          <div>
-            <h1 id="welcome"></h1>
-          </div>
-          <div id="icons">
+          <h1 id="welcome"></h1>
+          <div class="icons icons-home">
             <div class="icon-container">
               <div id="wifi" class="icon">
                 <a href="/wifi/">
@@ -52,18 +50,30 @@
         </div>
         <div id="page2">
           <h1>Settings</h1>
-          <div id="icons-settings">
-            <div class="settings-icon">
+          <div class="icons icons-settings">
+            <div class="icon-container">
               <div title="Change wifi adapter" id="adapter" class="icon" onclick="adapter()">
                 <i data-feather="rss"></i>
               </div>
               <p>Change wifi <br />adapter</p>
             </div>
-            <div class="settings-icon">
-              <div title="Terminal session" id="terminal" class="icon" onclick="terminal()" port=":4200">
+            <div class="icon-container">
+              <div title="Terminal session" id="terminal" class="icon" onclick="terminal()">
                 <i data-feather="terminal">Terminal</i>
               </div>
               <p>Terminal</p>
+            </div>
+            <div class="icon-container">
+              <div title="Reboot" id="reboot" class="icon" onclick="reboot()">
+                <i data-feather="refresh-cw">Reboot</i>
+              </div>
+              <p>Reboot</p>
+            </div>
+            <div class="icon-container">
+              <div title="Shutdown" id="shutdown" class="icon" onclick="shutdown()">
+                <i data-feather="power">Shutdown</i>
+              </div>
+              <p>Shutdown</p>
             </div>
           </div>
           <form id="settings-form">
@@ -193,6 +203,22 @@
       },
     );
     $("#terminal").hover(
+      () => {
+        colorchange("#ffc947");
+      },
+      () => {
+        colorchange("#000000");
+      },
+    );
+    $("#reboot").hover(
+      () => {
+        colorchange("#80e27e");
+      },
+      () => {
+        colorchange("#000000");
+      },
+    );
+    $("#shutdown").hover(
       () => {
         colorchange("#ff844c");
       },

@@ -8,7 +8,7 @@ body {
   color: rgba(0, 0, 0, 0.5);
 }
 
-#container {
+div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -18,7 +18,6 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  height: 100%;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -29,20 +28,18 @@ body {
   display: block;
 }
 
+#particles canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+#container {
+  height: 100%;
+}
+
 #inner-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
   padding: 1.5vh;
   background-color: white;
   border-radius: 20px;
@@ -50,77 +47,13 @@ body {
           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
-canvas {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
 #page1 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  margin-bottom: 1vh;
 }
 
 #page1 h1 {
-  color: rgba(0, 0, 0, 0.5);
   font-size: 3.5vh;
   margin: 15px;
-}
-
-#icons {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-}
-
-#icons svg {
-  width: 65%;
-  height: 65%;
-}
-
-#icons .icon {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  height: 8vh;
-  width: 8vh;
-  border-radius: 20px;
-  margin: 1.5vh;
-  -webkit-transition: ease 0.5s 0.1s;
-  transition: ease 0.5s 0.1s;
-}
-
-#icons .icon:hover {
-  -webkit-transform: scale(0.8);
-          transform: scale(0.8);
 }
 
 a {
@@ -141,7 +74,7 @@ a {
   background-color: #ff7961;
 }
 
-#wifi .feather-wifi {
+#wifi svg {
   stroke: #ba000d;
 }
 
@@ -149,7 +82,7 @@ a {
   background-color: #6ec6ff;
 }
 
-#folder .feather-folder {
+#folder svg {
   stroke: #0069c0;
 }
 
@@ -157,7 +90,7 @@ a {
   background-color: #80e27e;
 }
 
-#corner-right-up .feather-corner-right-up {
+#corner-right-up svg {
   stroke: #087f23;
 }
 
@@ -166,17 +99,17 @@ a {
   cursor: pointer;
 }
 
-#settings .feather-settings {
+#settings svg {
   stroke: #c79100;
 }
 
 #terminal {
-  background-color: #ff844c;
+  background-color: #ffc947;
   cursor: pointer;
 }
 
-#terminal .feather-terminal {
-  stroke: #b91400;
+#terminal svg {
+  stroke: #c66900;
 }
 
 #adapter {
@@ -184,22 +117,30 @@ a {
   cursor: pointer;
 }
 
-#adapter .feather-rss {
+#adapter svg {
   stroke: #280680;
+}
+
+#reboot {
+  background-color: #80e27e;
+  cursor: pointer;
+}
+
+#reboot svg {
+  stroke: #087f23;
+}
+
+#shutdown {
+  background-color: #ff844c;
+  cursor: pointer;
+}
+
+#shutdown svg {
+  stroke: #b91400;
 }
 
 #page2 {
   display: none;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
 }
 
 #page2 h1 {
@@ -207,35 +148,18 @@ a {
 }
 
 form {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
   margin: 10px;
 }
 
-#interface-div {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  margin: 10px 0px;
+form label {
+  font-size: 2.5vh;
 }
 
-label {
-  font-size: 2.5vh;
+#interface-div {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  margin: 10px 0px;
 }
 
 input[type="text"],
@@ -255,15 +179,10 @@ input[type="password"]:focus {
 }
 
 #buttons {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
 }
 
 #buttons .button {
@@ -297,16 +216,9 @@ input[type="password"]:focus {
 }
 
 #text-fields {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   width: 25vw;
   height: 100%;
 }
@@ -315,39 +227,30 @@ input[type="password"]:focus {
   margin: 10px 0px 5px 0px;
 }
 
-#radio-div {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-
-#radio-div .radio {
-  margin-bottom: 10px;
-}
-
-legend {
-  display: none;
-}
-
 #radio-title {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   font-size: 2vh;
 }
 
 #radio-title h1 {
   font-size: 2.5vh;
+}
+
+#radio-div {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+#radio-div .radio {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin-bottom: 10px;
+}
+
+legend {
+  display: none;
 }
 
 @media only screen and (max-width: 400px) {
@@ -368,11 +271,11 @@ legend {
     width: 80vw;
   }
   #buttons .button {
-    height: 6.5vw;
+    height: 8vw;
   }
   input[type="text"],
   input[type="password"] {
-    height: 6.5vw;
+    height: 8vw;
   }
 }
 
@@ -381,15 +284,15 @@ legend {
     width: 50vw;
   }
   #buttons .button {
-    height: 4vw;
+    height: 5vw;
   }
   input[type="text"],
   input[type="password"] {
-    height: 4vw;
+    height: 5vw;
   }
 }
 
-#icons-settings {
+.icons {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -400,10 +303,28 @@ legend {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  width: 100%;
 }
 
-#icons-settings .icon {
+.icons .icon-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.icons .icon-container p {
+  color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  margin: 0 1vh;
+}
+
+.icons .icon {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -413,53 +334,40 @@ legend {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  height: 6vh;
-  width: 6vh;
   border-radius: 20px;
   margin: 1.5vh;
   -webkit-transition: ease 0.5s 0.1s;
   transition: ease 0.5s 0.1s;
 }
 
-#icons-settings .icon:hover {
+.icons .icon:hover {
   -webkit-transform: scale(0.8);
           transform: scale(0.8);
 }
 
-.icon-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  margin-bottom: 1vh;
+.icons.icons-settings {
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 
-p {
-  margin: 0;
-  color: rgba(0, 0, 0, 0.5);
+.icons.icons-settings .icon {
+  height: 6vh;
+  width: 6vh;
 }
 
-.settings-icon {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  margin: 0px 15px;
-  text-align: center;
+.icons.icons-settings .icon svg {
+  width: 50%;
+  height: 50%;
+}
+
+.icons.icons-home .icon {
+  height: 8vh;
+  width: 8vh;
+}
+
+.icons.icons-home .icon svg {
+  width: 65%;
+  height: 65%;
 }
 /*# sourceMappingURL=css.css.map */

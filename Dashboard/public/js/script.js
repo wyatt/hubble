@@ -32,17 +32,26 @@ const settings = (value) => {
 
 //Terminal link
 const terminal = () => {
-  const port = $("#terminal").attr("port");
   window.alert("⚠ Please note: This tool is very powerful and should only be used if you know what you're doing!");
-  window.location.href = window.location.origin + port;
+  window.location.href = window.location.origin + ":4200";
 };
 
 //Change adapter
 const adapter = () => {
   window.alert(
-    "⚠ This device will now shutdown. Once the device is shutdown, change adapters and turn the plug on and off. The driver will then be installed and the device will reboot. Then, if the adapter is supported, everything pshould be working!",
+    "⚠ This device will now shutdown. Once the device is shutdown, change adapters and turn the plug on and off. The driver will then be installed and the device will reboot. Then, if the adapter is supported, everything should be working!",
   );
   $.post("adapter/");
+};
+
+const reboot = () => {
+  window.alert("⚠ This device will now reboot. Continue?");
+  $.post("reboot/");
+};
+
+const shutdown = () => {
+  window.alert("⚠ This device will now shutdown. Continue?");
+  $.post("shutdown/");
 };
 
 const submit = (postData) => {

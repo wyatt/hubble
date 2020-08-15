@@ -25,15 +25,25 @@ app.use(express.static(path.join(__dirname + "/public")));
 
 app.engine("html", require("ejs").renderFile);
 
-app.get("/", function (req, res) {
+app.get("/", (req, res) => {
   res.render(path.join(__dirname + "/index.html"), { name, hostname, iface });
 });
 
-app.post("/adapter", function (req, res) {
-  shell.exec("/usr/local/sbin/change-adapter");
+app.post("/adapter", () => {
+  shell.exec("changedongle");
 });
 
-app.post("/savesettings", function (req, res) {
+app.post("/reboot", () => {
+  shell.exec("sudo reboot");
+});
+
+app.post("/shutdown", () => {
+  shell.exec("sudo shutdown now");
+});
+
+//Save settings
+
+app.post("/savesettings", (req, res) => {
   req = req.body;
   if (req.name !== properties.name && req.name) namechange(req.name);
   if (req.hostname !== properties.hostname && req.hostname) hostnamechange(req.hostname);
