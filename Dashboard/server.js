@@ -83,12 +83,8 @@ const hostnamechange = (hostname) => {
 
 const passwordchange = (password) => {
   console.log(`Changing password to ${password}`);
-  //let command = shell.exec(`changepassword "${password}"`, { silent: true });
-  // if (command.code === 0) {
-  //   console.log(`Changed password to ${password}`);
-  //   statuses.push(true);
-  // } else statuses.push(false);
-  if (true) {
+  let command = shell.exec(`changepassword "${password}"`, { silent: true });
+  if (command.code === 0) {
     console.log(`Changed password to ${password}`);
     statuses.push(true);
   } else statuses.push(false);
