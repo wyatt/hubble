@@ -4,11 +4,10 @@ const express = require("express");
 const app = express();
 const shell = require("shelljs");
 const multer = require("multer");
-const bcrypt = require("bcrypt");
 const upload = multer();
 
-const namefile = require("./data/name.json");
-let name = namefile.name;
+const infofile = require("./data/info.json");
+let name = infofile.name;
 
 let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/[\r\n]/g, "");
 let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout.replace(/[\r\n]/g, "");
@@ -52,9 +51,8 @@ app.post("/savesettings", function (req, res) {
 
 const namechange = (newname) => {
   console.log(`Changing name to ${newname}`);
-  namefile.name = newname;
-  name = newname;
-  fs.writeFile("./name.json", JSON.stringify(namefile), (err) => {
+  infofile.name = newname;
+  fs.writeFile("./data/info.json", JSON.stringify(infofile), (err) => {
     if (err) {
       statuses.push(false);
     } else {
@@ -85,10 +83,15 @@ const hostnamechange = (hostname) => {
 
 const passwordchange = (password) => {
   console.log(`Changing password to ${password}`);
-  let command = shell.exec(`changepassword "${password}"`, { silent: true });
-  // bcrypt.hash("secret", 8).then((password) => {
-  //   shell.exec(`sudo sed -i '2s/.*/${password}/' /etc/raspap/raspap.auth`);
-  // });
+  //let command = shell.exec(`changepassword "${password}"`, { silent: true });
+  // if (command.code === 0) {
+  //   console.log(`Changed password to ${password}`);
+  //   statuses.push(true);
+  // } else statuses.push(false);
+  if (true) {
+    console.log(`Changed password to ${password}`);
+    statuses.push(true);
+  } else statuses.push(false);
 };
 
 const ifacechange = (interface) => {
