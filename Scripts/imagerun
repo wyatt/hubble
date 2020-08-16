@@ -76,3 +76,6 @@ sudo env PATH=$PATH:/usr/bin /home/pi/hubble/Dashboard/node_modules/pm2/bin/pm2 
 echo "@reboot sudo everyboot" >> /tmp/newcrontab
 sudo crontab /tmp/newcrontab
 sudo rm /tmp/newcrontab
+
+#Install docker
+curl -sSL https://get.docker.com | sh
