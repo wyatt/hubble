@@ -1,5 +1,6 @@
 ngrok.exe
 .prettierrc
+.vscode/
 ### Sass ###
 .sass-cache/
 *.css.map
