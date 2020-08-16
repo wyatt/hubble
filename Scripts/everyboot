@@ -4,9 +4,9 @@ ROUTERIP=$(ip route show | grep -i 'default via'| awk '{print $3}')
 
 APBLOCKIPR=$(cat /etc/nginx/blockips.conf | grep -oP '\d.*\d')
 SSHBLOCKIPR=$(cat /etc/hosts.deny | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
-APIP=$(grep 'ip_address = ' wlan1.ini | cut -d\  -f3)
+APIP=$(grep 'ip_address = ' /etc/raspap/networking/wlan1.ini | cut -d\  -f3)
 APIPRSHORT=$(echo $APIP | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
-APIPR="${APIPRSHORT}0/24"
+APIPR="${APIPRSHORT}0/$(grep 'ip_address = ' /etc/raspap/networking/wlan1.ini | cut -d\/ -f2)"
 
 if cat /etc/dhcpcd.conf | grep ipaddr
 then

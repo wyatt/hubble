@@ -79,3 +79,6 @@ sudo rm /tmp/newcrontab
 
 #Install docker
 curl -sSL https://get.docker.com | sh
+#Change to admin
+sudo usermod -aG docker pi
+sudo apt-get install -y libffi-dev libssl-dev
