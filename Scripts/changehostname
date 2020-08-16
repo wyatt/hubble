@@ -8,4 +8,8 @@ fi
 CHOST=$(hostname)
 NHOST=$1
 
-echo $NHOST | sudo tee /etc/hostname > /dev/null && sudo sed -i "s/${CHOST}/${NHOST}/g" /etc/hosts && sudo sed -i "s/${CHOST}/${NHOST}/g" /etc/nginx/sites-available/default
+echo $NHOST | sudo tee /etc/hostname > /dev/null && 
+sudo sed -i "s/${CHOST}/${NHOST}/g" /etc/hosts && 
+sudo sed -i "s/${CHOST}/${NHOST}/g" /etc/nginx/sites-available/default
+
+sudo reboot

@@ -14,4 +14,4 @@ elif (($1 == "wlan0"))
 	sudo sed -i "s|eth0|wlan0|g" /etc/dhcpcd.conf
 	sudo mv /etc/wpa_supplicant/wpa_supplicant.old.conf /etc/wpa_supplicant/wpa_supplicant.conf
 fi
-sudo reboot now
+sudo reboot

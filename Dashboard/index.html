@@ -122,9 +122,10 @@
       if (!name) postData[0].value = window.info.name;
       if (iface !== window.info.iface || hostname) {
         if (
-          /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(
+          (/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(
             hostname,
-          ) ||
+          ) &&
+            hostname) ||
           iface !== window.info.iface
         ) {
           let reboot = window.confirm(
