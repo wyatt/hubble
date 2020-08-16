@@ -64,6 +64,7 @@ sudo systemctl enable php7.3-fpm
 sudo systemctl enable nginx
 #Need to copy nginx config -> /etc/nginx/sites-available/default
 #Need to copy blockips.conf -> /etc/nginx/blockips.conf
+#Need to add sshd : 10.3.141.* -> /etc/hosts.deny
 sudo htpasswd -b -c /etc/nginx/.htpasswd admin $intialpassword
 sudo chown -R www-data:www-data /var/www/html
 sudo chmod -R 755 /var/www/html
@@ -71,3 +72,7 @@ sudo usermod -aG pihole www-data
 ~/hubble/Dashboard/node_modules/.bin/pm2 startup systemd
 sudo env PATH=$PATH:/usr/bin /home/pi/hubble/Dashboard/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi
 ~/hubble/Dashboard/node_modules/.bin/pm2 save
+#Add everyboot script
+echo "@reboot sudo everyboot" >> /tmp/newcrontab
+sudo crontab /tmp/newcrontab
+sudo rm /tmp/newcrontab

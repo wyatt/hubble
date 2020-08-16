@@ -2,8 +2,11 @@
 IP=$(ip route show | grep -i 'default via'| awk '{print $7}')
 ROUTERIP=$(ip route show | grep -i 'default via'| awk '{print $3}')
 
+APBLOCKIPR=$(cat /etc/nginx/blockips.conf | grep -oP '\d.*\d')
+SSHBLOCKIPR=$(cat /etc/hosts.deny | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
 APIP=$(ip -o -f inet addr show dev wlan1 | awk '/scope global/ {print $4}')
-APBLOCKIP=$(cat /etc/nginx/blockips.conf | grep -o -P '\d.*\d')
+APIPRSHORT=$(echo $APIP | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
+APIPR="${APIPRSHORT}0/24"
 
 if cat /etc/dhcpcd.conf | grep ipaddr
 then
@@ -13,9 +16,10 @@ then
 	sudo pihole enable
 fi
 
-if [[ "$APIP"  != "$APBLOCKIP" ]]
+if [[ "$APIPR"  != "$APBLOCKIPR" ]]
 then
-	sudo sed -i "s/${APBLOCKIP}/${APIP}/g" /etc/nginx/blockips
+	sudo sed -i "s/${APBLOCKIPR}/${APIPR}/g" /etc/nginx/blockips
+	sudo sed -i "s/${SSHBLOCKIPR}/${APIPRSHORT}/g" /etc/hosts.deny
 fi
 
 
