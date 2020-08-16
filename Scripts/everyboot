@@ -4,7 +4,7 @@ ROUTERIP=$(ip route show | grep -i 'default via'| awk '{print $3}')
 
 APBLOCKIPR=$(cat /etc/nginx/blockips.conf | grep -oP '\d.*\d')
 SSHBLOCKIPR=$(cat /etc/hosts.deny | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
-APIP=$(ip -o -f inet addr show dev wlan1 | awk '/scope global/ {print $4}')
+APIP=$(grep 'ip_address = ' wlan1.ini | cut -d\  -f3)
 APIPRSHORT=$(echo $APIP | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
 APIPR="${APIPRSHORT}0/24"
 
