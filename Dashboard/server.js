@@ -6,8 +6,10 @@ const shell = require("shelljs");
 const multer = require("multer");
 const upload = multer();
 
-const infofile = require("./data/info.json");
+const infofile = require("./info.json");
+
 let name = infofile.name;
+console.log(name);
 
 let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/[\r\n]/g, "");
 let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout.replace(/[\r\n]/g, "");
@@ -62,7 +64,8 @@ app.post("/savesettings", (req, res) => {
 const namechange = (newname) => {
   console.log(`Changing name to ${newname}`);
   infofile.name = newname;
-  fs.writeFile("./data/info.json", JSON.stringify(infofile), (err) => {
+  name = newname;
+  fs.writeFile("info.json", JSON.stringify(infofile), (err) => {
     if (err) {
       statuses.push(false);
     } else {
