@@ -12,8 +12,6 @@ let name = infofile.name;
 let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/[\r\n]/g, "");
 let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout.replace(/[\r\n]/g, "");
 
-iface = "wlan0";
-
 const properties = { name, hostname, iface };
 
 let statuses = [];
@@ -28,23 +26,11 @@ app.use(express.static(path.join(__dirname + "/public")));
 app.engine("html", require("ejs").renderFile);
 
 app.get("/", (req, res) => {
-  // devices = JSON.parse(
-  //   shell.exec("sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:list --output json", {
-  //     silent: true,
-  //   }),
-  // );
-  devices = [
-    {
-      mount_id: 1,
-      mount_point: "/ETHAN",
-      storage: "\\OC\\Files\\Storage\\Local",
-      authentication_type: "null::null",
-      configuration: { datadir: "/media/usb0" },
-      options: { enable_sharing: false },
-      applicable_users: [],
-      applicable_groups: [],
-    },
-  ];
+  devices = JSON.parse(
+    shell.exec("sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:list --output json", {
+      silent: true,
+    }),
+  );
   res.render(path.join(__dirname + "/index.html"), { name, hostname, iface, devices });
 });
 
