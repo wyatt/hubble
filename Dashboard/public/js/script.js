@@ -76,6 +76,17 @@ const shutdown = () => {
   $.post("shutdown/");
 };
 
+const eject = (num) => {
+  $.ajax({
+    url: "eject/",
+    type: "POST",
+    data: { index: num.toString() },
+    success: () => {
+      return;
+    },
+  });
+};
+
 const submit = (postData) => {
   $("input[type='submit']").val("Saving");
   $.ajax({

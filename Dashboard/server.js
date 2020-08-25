@@ -12,21 +12,43 @@ let name = infofile.name;
 let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/[\r\n]/g, "");
 let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout.replace(/[\r\n]/g, "");
 
+iface = "wlan0";
 const properties = { name, hostname, iface };
 
 let statuses = [];
+let devices;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(upload.array());
+
 app.use(express.static(path.join(__dirname + "/public")));
 
 app.engine("html", require("ejs").renderFile);
 
 app.get("/", (req, res) => {
-  let devices = JSON.parse(
-    shell.exec("sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:list --output json"),
-  );
+  // devices = JSON.parse(
+  //   shell.exec("sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:list --output json"),
+  // );
+  devices = [
+    {
+      mount_id: 15,
+      mount_point: "/test",
+      storage: "\\OC\\Files\\Storage\\Local",
+      authentication_type: "null::null",
+      configuration: { datadir: "/media/usb0" },
+      options: {
+        encrypt: true,
+        previews: true,
+        enable_sharing: false,
+        filesystem_check_changes: 1,
+        encoding_compatibility: false,
+        readonly: false,
+      },
+      applicable_users: [],
+      applicable_groups: [],
+    },
+  ];
   res.render(path.join(__dirname + "/index.html"), { name, hostname, iface, devices });
 });
 
@@ -42,6 +64,12 @@ app.post("/shutdown", () => {
   shell.exec("sudo shutdown now");
 });
 
+app.post("/eject", (req, res) => {
+  let index = parseInt(req.body.index);
+  let mountid = devices[index].mount_id;
+  let datadir = devices[index].configuration.datadir;
+  shell.exec(`/etc/usbmount/umount.d/unmount ${mountid} ${datadir}`);
+});
 //Save settings
 
 app.post("/savesettings", (req, res) => {
