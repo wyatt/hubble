@@ -7,14 +7,10 @@ const multer = require("multer");
 const upload = multer();
 
 const infofile = require("./info.json");
-
 let name = infofile.name;
-console.log(name);
 
 let hostname = shell.exec("hostname", { silent: true }).stdout.replace(/[\r\n]/g, "");
 let iface = shell.exec("route | grep '^default' | grep -o '[^ ]*$'", { silent: true }).stdout.replace(/[\r\n]/g, "");
-
-iface = "wlan0";
 
 const properties = { name, hostname, iface };
 
@@ -28,7 +24,10 @@ app.use(express.static(path.join(__dirname + "/public")));
 app.engine("html", require("ejs").renderFile);
 
 app.get("/", (req, res) => {
-  res.render(path.join(__dirname + "/index.html"), { name, hostname, iface });
+  let devices = shell.exec(
+    "sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:list --output json",
+  );
+  res.render(path.join(__dirname + "/index.html"), { name, hostname, iface, devices });
 });
 
 app.post("/adapter", () => {
@@ -67,6 +66,7 @@ const namechange = (newname) => {
   name = newname;
   fs.writeFile("info.json", JSON.stringify(infofile), (err) => {
     if (err) {
+      console.log("Falied to change name");
       statuses.push(false);
     } else {
       console.log(`Changed name to ${newname}`);
@@ -87,9 +87,11 @@ const hostnamechange = (hostname) => {
       console.log(`Changed hostname to ${hostname}`);
       statuses.push(true);
     } else {
+      console.log("Falied to change hostname");
       statuses.push(false);
     }
   } else {
+    console.log("Falied to change hostname");
     statuses.push(false);
   }
 };
@@ -100,7 +102,10 @@ const passwordchange = (password) => {
   if (command.code === 0) {
     console.log(`Changed password to ${password}`);
     statuses.push(true);
-  } else statuses.push(false);
+  } else {
+    console.log("Falied to change password");
+    statuses.push(false);
+  }
 };
 
 const ifacechange = (interface) => {
@@ -109,7 +114,10 @@ const ifacechange = (interface) => {
   if (command.code === 0) {
     console.log(`Changed interface to ${interface}`);
     statuses.push(true);
-  } else statuses.push(false);
+  } else {
+    console.log("Falied to change interface");
+    statuses.push(false);
+  }
 };
 
 const reboot = () => {

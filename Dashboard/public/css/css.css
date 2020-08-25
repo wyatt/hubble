@@ -139,6 +139,15 @@ a {
   stroke: #b91400;
 }
 
+#devices {
+  background-color: #6ec6ff;
+  cursor: pointer;
+}
+
+#devices svg {
+  stroke: #0069c0;
+}
+
 #page2 {
   display: none;
 }
@@ -183,6 +192,7 @@ input[type="password"]:focus {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  width: 100%;
 }
 
 #buttons .button {
@@ -346,6 +356,8 @@ legend {
 }
 
 .icons.icons-settings {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
@@ -369,5 +381,55 @@ legend {
 .icons.icons-home .icon svg {
   width: 65%;
   height: 65%;
+}
+
+#page3 {
+  display: none;
+}
+
+#page3 ul {
+  list-style: none;
+  padding: 0;
+}
+
+#page3 p {
+  margin: 0 10vw 0 0;
+}
+
+.mount {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  padding: 5px;
+  font-size: 2.5vh;
+  display: none;
+}
+
+.mount button {
+  border: none;
+  border-radius: 20px;
+  font-size: 2.5vh;
+  padding: 10px;
+  color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.mount button:focus {
+  outline: none;
+}
+
+.mount button:hover {
+  color: #b91400;
+  background-color: #ff844c;
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+}
+
+#noDevices {
+  margin: 0 5vw;
 }
 /*# sourceMappingURL=css.css.map */

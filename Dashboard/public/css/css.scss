@@ -116,6 +116,14 @@ a {
   }
 }
 
+#devices {
+  background-color: #6ec6ff;
+  cursor: pointer;
+  svg {
+    stroke: #0069c0;
+  }
+}
+
 //Page 2
 #page2 {
   display: none;
@@ -154,6 +162,7 @@ input[type="password"] {
 
 #buttons {
   flex-direction: row;
+  width: 100%;
   .button {
     width: 100%;
     margin: 5px;
@@ -270,6 +279,7 @@ legend {
     }
   }
   &.icons-settings {
+    flex-wrap: wrap;
     .icon {
       height: 6vh;
       width: 6vh;
@@ -290,4 +300,46 @@ legend {
       }
     }
   }
+}
+
+//Page 3
+#page3 {
+  display: none;
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  p {
+    margin: 0 10vw 0 0;
+  }
+}
+
+.mount {
+  flex-direction: row;
+  padding: 5px;
+  font-size: 2.5vh;
+  display: none;
+  button {
+    border: none;
+    border-radius: $border;
+    font-size: 2.5vh;
+    padding: 10px;
+    color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: rgb(185, 20, 0); //#b91400
+      background-color: rgb(255, 132, 76); //#ff844c
+      transform: scale(0.9);
+    }
+  }
+}
+
+#noDevices {
+  margin: 0 5vw;
 }

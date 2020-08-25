@@ -35,7 +35,7 @@
             <div class="icon-container">
               <div id="corner-right-up" class="icon">
                 <a href="/admin/">
-                  <i data-feather="corner-right-up">DNS</i>
+                  <i data-feather="shield">DNS</i>
                 </a>
               </div>
               <p>DNS</p>
@@ -75,6 +75,12 @@
               </div>
               <p>Shutdown</p>
             </div>
+            <div class="icon-container">
+              <div title="Devices" id="devices" class="icon" onclick="devices()">
+                <i data-feather="hard-drive">Devices</i>
+              </div>
+              <p>Devices</p>
+            </div>
           </div>
           <form id="settings-form">
             <div id="text-fields">
@@ -106,11 +112,40 @@
             </div>
           </form>
         </div>
+        <div id="page3">
+          <h1>Devices</h1>
+          <p id="noDevices">No devices detected</p>
+          <ul>
+            <li>
+              <div class="mount">
+                <p></p>
+                <button class="button" type="button">Eject ⏏</button>
+              </div>
+            </li>
+            <li>
+              <div class="mount">
+                <p></p>
+                <button class="button" type="button">Eject ⏏</button>
+              </div>
+            </li>
+            <li>
+              <div class="mount">
+                <p></p>
+                <button class="button" type="button">Eject ⏏</button>
+              </div>
+            </li>
+          </ul>
+          <div id="buttons">
+            <button onclick='devices("back")' class="button" type="button">Back</button>
+          </div>
+        </div>
       </div>
     </div>
   </body>
   <script>
     window.info = JSON.parse('{"name": "<%= name %>", "hostname": "<%= hostname %>", "iface": "<%= iface %>"}');
+    window.devices = <%-JSON.stringify(devices)%>;
+    let ooo = "hello";
     $("#settings-form").submit(function (e) {
       e.preventDefault();
       let postData = $(this).serializeArray();
@@ -220,6 +255,22 @@
       },
     );
     $("#shutdown").hover(
+      () => {
+        colorchange("#ff844c");
+      },
+      () => {
+        colorchange("#000000");
+      },
+    );
+    $("#devices").hover(
+      () => {
+        colorchange("#6ec6ff");
+      },
+      () => {
+        colorchange("#000000");
+      },
+    );
+    $(".device").hover(
       () => {
         colorchange("#ff844c");
       },

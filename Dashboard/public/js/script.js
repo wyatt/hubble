@@ -4,9 +4,9 @@ $(document).ready(() => {
   feather.replace();
   particlesJS.load("particles", "js/particles.json");
   info = window.info;
-  //$(`input[value=${info.iface}]`).attr("checked", true);
   $(`input[value=${info.iface}]`).attr("checked", true);
   welcome(info.name);
+  mounts();
 });
 
 const welcome = (name) => {
@@ -30,6 +30,28 @@ const settings = (value) => {
   }
 };
 
+const devices = (value) => {
+  if (value == "back") {
+    $("#page2").css("display", "flex");
+    $("#page3").css("display", "none");
+  } else {
+    $("#page2").css("display", "none");
+    $("#page3").css("display", "flex");
+  }
+};
+
+const mounts = () => {
+  $(".mount").each((index, obj) => {
+    if (index >= window.devices.length) {
+      return;
+    }
+    let mountName = window.devices[index].mount_point.replace("/", "");
+    $(obj).css("display", "flex");
+    $("#noDevices").css("display", "none");
+    $("p", obj).text(mountName);
+  });
+  return;
+};
 //Terminal link
 const terminal = () => {
   window.alert("⚠ Please note: This tool is very powerful and should only be used if you know what you're doing!");

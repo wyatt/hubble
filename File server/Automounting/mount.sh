@@ -7,4 +7,4 @@ LABEL=$(sudo blkid $UM_DEVICE | grep -o ""LABEL.*"" | cut -d'"' -f2)
 #echo "Mountoptions: ${UM_OPTIONS}" | sed 's;/;\\/;g' >> /home/pi/test.txt
 #echo "Vendor: ${UM_VENDOR}" | sed 's;/;\\/;g' >> /home/pi/test.txt
 #echo "Label: ${LABEL}" | sed 's;/;\\/;g' >> /home/pi/test.txt
-sudo docker exec nextcloudpi sudo -u www-data php /var/www/nextcloud/occ files_external:create ${LABEL} local null::null -c datadir=${UM_MOUNTPOINT}
+sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:create ${LABEL} local null::null -c datadir=${UM_MOUNTPOINT}

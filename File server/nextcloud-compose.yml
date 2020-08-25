@@ -1,7 +1,7 @@
+version: '3'
+services:
   nextcloud:
     image: nextcloud:apache
-    environment:
-      - ONIONSERVICE_NAME=app
     networks:
       - faraday
     depends_on:
@@ -17,7 +17,7 @@
       - /media/usb1:/media/usb1
     restart: unless-stopped
   db:
-    image: mariadb
+    image: linuxserver/mariadb:arm32v7-latest
     networks:
       - faraday
     volumes:
@@ -29,9 +29,12 @@
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
     restart: unless-stopped
+
+
 volumes:
   nextcloud:
   db:
+
 networks:
   faraday:
-    driver: bridge
+      driver: bridge
