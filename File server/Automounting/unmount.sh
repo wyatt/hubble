@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ test $# -eq 0 ]
+if test $# -eq 0
 then
   x=-1
   for i in $(sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:list --output json | jq '.[].configuration.datadir')
@@ -14,13 +14,12 @@ then
       datadir=$(sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:list --output json | jq '.['"${x}"'].configuration.datadir')
       sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:delete $mountid -y
       sudo pumount $datadir
-    else
     fi
-  done    
-elif [ test $# -eq 2 ]
+  done
+elif test $# -eq 2
+then
   sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:delete $1 -y
   sudo pumount $2
 else
   exit 1
 fi
-
