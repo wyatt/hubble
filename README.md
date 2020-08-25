@@ -1,4 +1,4 @@
-# 🌐 hubble
+# 🏠 hubble
 ### Super simple restricted wifi, adblocking and file sharing
 
 
