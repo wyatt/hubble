@@ -1,3 +1,5 @@
+// const e = require("express");
+
 let info;
 
 $(document).ready(() => {
@@ -77,12 +79,29 @@ const shutdown = () => {
 };
 
 const eject = (num) => {
+  $(`#eject_${num}`).text("Ejecting");
   $.ajax({
     url: "eject/",
     type: "POST",
     data: { index: num.toString() },
     success: () => {
+      $(`#eject_${num}`).text("Save to remove");
+      $(`#eject_${num}`).css("color", "white");
+      $(`#eject_${num}`).css("background-color", "#087f23");
+      setTimeout(() => {
+        $(`#eject_${num}`).parent().css("display", "none");
+      }, 2000);
       return;
+    },
+    error: () => {
+      $(`#eject_${num}`).text("Error");
+      $(`#eject_${num}`).css("color", "white");
+      $(`#eject_${num}`).css("background-color", "#ba000d");
+      setTimeout(() => {
+        $(`#eject_${num}`).css("color", "");
+        $(`#eject_${num}`).css("background-color", "");
+        $(`#eject_${num}`).text("Eject ⏏");
+      }, 2000);
     },
   });
 };
