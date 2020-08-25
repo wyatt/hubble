@@ -396,6 +396,10 @@ legend {
   margin: 0 10vw 0 0;
 }
 
+#page3 #noDevices {
+  margin: 0 5vw;
+}
+
 .mount {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
@@ -427,9 +431,5 @@ legend {
   background-color: #ff844c;
   -webkit-transform: scale(0.9);
           transform: scale(0.9);
-}
-
-#noDevices {
-  margin: 0 5vw;
 }
 /*# sourceMappingURL=css.css.map */

@@ -24,8 +24,8 @@ app.use(express.static(path.join(__dirname + "/public")));
 app.engine("html", require("ejs").renderFile);
 
 app.get("/", (req, res) => {
-  let devices = shell.exec(
-    "sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:list --output json",
+  let devices = JSON.parse(
+    shell.exec("sudo docker exec -u www-data nextcloud php /var/www/html/occ files_external:list --output json"),
   );
   res.render(path.join(__dirname + "/index.html"), { name, hostname, iface, devices });
 });

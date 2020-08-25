@@ -312,6 +312,9 @@ legend {
   p {
     margin: 0 10vw 0 0;
   }
+  #noDevices {
+    margin: 0 5vw;
+  }
 }
 
 .mount {
@@ -338,8 +341,4 @@ legend {
       transform: scale(0.9);
     }
   }
-}
-
-#noDevices {
-  margin: 0 5vw;
 }
