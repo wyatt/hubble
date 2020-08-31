@@ -1,8 +1,8 @@
 let info = window.info;
 
 //Helper code
-const $ = document.querySelectorAll.bind(document);
-const $_ = document.querySelector.bind(document);
+const $ = (selector) => document.querySelectorAll(selector);
+const $_ = (selector) => document.querySelector(selector);
 const isEmpty = (value) => {
   if (value == null || value.length == 0) return true;
   else return false;
