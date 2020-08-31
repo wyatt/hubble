@@ -44,7 +44,7 @@ div {
 }
 
 //Page 1
-#page1 {
+#home-page {
   margin-bottom: 1vh;
   h1 {
     font-size: 3.5vh;
@@ -125,7 +125,7 @@ a {
 }
 
 //Page 2
-#page2 {
+#settings-page {
   display: none;
   h1 {
     margin-bottom: 0;
@@ -136,6 +136,8 @@ a {
 
 form {
   margin: 10px;
+  display: flex;
+  flex-direction: column;
   label {
     font-size: 2.5vh;
   }
@@ -146,6 +148,22 @@ form {
   margin: 10px 0px;
 }
 
+#interface-message {
+  margin-top: 0;
+  color: #f44336;
+}
+
+#iface-more-info {
+  cursor: pointer;
+  //text-decoration: underline;
+  //padding-bottom: 1px;
+  border-bottom: 1px solid #f44336;
+  display: inline-block;
+  transition: ease 0.3s;
+  &:hover {
+    transform: scale(0.8);
+  }
+}
 input[type="text"],
 input[type="password"] {
   border-radius: $border;
@@ -303,7 +321,7 @@ legend {
 }
 
 //Page 3
-#page3 {
+#devices-page {
   display: none;
   ul {
     list-style: none;

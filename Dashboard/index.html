@@ -5,15 +5,13 @@
     <link rel="stylesheet" href="css/css.css" />
     <script src="js/feather.min.js"></script>
     <script src="js/particles.min.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/script.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
     <div id="particles"></div>
     <div id="container">
       <div id="inner-container">
-        <div id="page1">
+        <div id="home-page">
           <h1 id="welcome"></h1>
           <div class="icons icons-home">
             <div class="icon-container">
@@ -41,14 +39,14 @@
               <p>DNS</p>
             </div>
             <div class="icon-container">
-              <div id="settings" class="icon" onclick="settings()">
+              <div id="settings" class="icon">
                 <i data-feather="settings">Settings</i>
               </div>
               <p>Settings</p>
             </div>
           </div>
         </div>
-        <div id="page2">
+        <div id="settings-page">
           <h1>Settings</h1>
           <div class="icons icons-settings">
             <div class="icon-container">
@@ -76,7 +74,7 @@
               <p>Shutdown</p>
             </div>
             <div class="icon-container">
-              <div title="Devices" id="devices" class="icon" onclick="devices()">
+              <div title="Devices" id="devices" class="icon">
                 <i data-feather="hard-drive">Devices</i>
               </div>
               <p>Devices</p>
@@ -93,6 +91,7 @@
             </div>
             <div id="radio-title">
               <h1>Interface</h1>
+              <p id="interface-message"></p>
             </div>
             <div id="interface-div">
               <div id="radio-div">
@@ -107,12 +106,12 @@
               </div>
             </div>
             <div id="buttons">
-              <button onclick='settings("back")' class="button" type="button">Back</button>
+              <button id="back-settings" class="button" type="button">Back</button>
               <input type="submit" value="Save" class="button" id="submit" />
             </div>
           </form>
         </div>
-        <div id="page3">
+        <div id="devices-page">
           <h1>Devices</h1>
           <p id="noDevices">No devices detected</p>
           <ul>
@@ -136,147 +135,19 @@
             </li>
           </ul>
           <div id="buttons">
-            <button onclick='devices("back")' class="button" type="button">Back</button>
+            <button id="back-devices" class="button" type="button">Back</button>
           </div>
         </div>
       </div>
     </div>
+    <script>
+      window.info = {
+        name: "<%= name %>",
+        hostname: "<%= hostname %>",
+        iface: "<%= iface %>",
+        devices: <%-JSON.stringify(devices)%>,
+      };
+    </script>
+    <script src="js/script.js"></script>
   </body>
-  <script>
-    window.info = JSON.parse('{"name": "<%= name %>", "hostname": "<%= hostname %>", "iface": "<%= iface %>"}');
-    window.devices = <%-JSON.stringify(devices)%>;
-    let ooo = "hello";
-    $("#settings-form").submit(function (e) {
-      e.preventDefault();
-      let postData = $(this).serializeArray();
-      let name = postData[0].value;
-      let hostname = postData[1].value;
-      let password = postData[2].value;
-      let iface = postData[3].value;
-      if (hostname === window.info.hostname) hostname = "";
-      if (!name) postData[0].value = window.info.name;
-      if (iface !== window.info.iface || hostname) {
-        if (
-          (/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(
-            hostname,
-          ) &&
-            hostname) ||
-          iface !== window.info.iface
-        ) {
-          let reboot = window.confirm(
-            "One or more of the settings you changed will cause the device to reboot. Continue?",
-          );
-          if (reboot) {
-            submit(postData);
-          } else {
-            $("#settings-form").trigger("reset");
-          }
-        } else {
-          window.alert("Illegal character detected in hostname field. Please ammend");
-        }
-      } else if (iface === info.iface && !hostname && !name && !password) {
-        e.preventDefault();
-        return;
-      } else {
-        submit(postData);
-      }
-      e.preventDefault();
-    });
-    //Particle color change
-    const colorchange = (color) => {
-      $.each(pJSDom[0].pJS.particles.array, (i, p) => {
-        pJSDom[0].pJS.particles.array[i].color.value = color;
-        pJSDom[0].pJS.particles.array[i].color.rgb = hexToRgb(color);
-        pJSDom[0].pJS.particles.line_linked.color_rgb_line = hexToRgb(color);
-      });
-    };
-    $("#corner-right-up").hover(
-      () => {
-        colorchange("#80e27e");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-    $("#folder").hover(
-      () => {
-        colorchange("#6ec6ff");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-    $("#wifi").hover(
-      () => {
-        colorchange("#ff7961");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-    $("#settings").hover(
-      () => {
-        colorchange("#c79100");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-    $("#submit").hover(
-      () => {
-        colorchange("#c79100");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-    $("#adapter").hover(
-      () => {
-        colorchange("#9162e4");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-    $("#terminal").hover(
-      () => {
-        colorchange("#ffc947");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-    $("#reboot").hover(
-      () => {
-        colorchange("#80e27e");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-    $("#shutdown").hover(
-      () => {
-        colorchange("#ff844c");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-    $("#devices").hover(
-      () => {
-        colorchange("#6ec6ff");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-    $(".device").hover(
-      () => {
-        colorchange("#ff844c");
-      },
-      () => {
-        colorchange("#000000");
-      },
-    );
-  </script>
 </html>
