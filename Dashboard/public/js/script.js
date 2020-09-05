@@ -30,7 +30,7 @@ const mounts = (devices) => {
 };
 const interfaces = (iface) => {
   if (iface) {
-    $_(`input[value=${info.iface}]`).attr("checked", true);
+    $_(`input[value=${info.iface}]`).setAttribute("checked", true);
   } else {
     $_("#interface-message").innerHTML = "Interface not detected! <span id='iface-more-info'>More info</span>";
     $_("#iface-more-info").addEventListener("click", () => {
