@@ -1,15 +1,13 @@
 #!/bin/bash
 
-if test $# -eq 0
+if [[ $# -eq 0 ]]
 then
     exit 1
 fi
 
-CHOST=$(hostname)
-NHOST=$1
+currenthostname=$(hostname)
+newhostname=$1
 
-echo $NHOST | sudo tee /etc/hostname > /dev/null && 
-sudo sed -i "s/${CHOST}/${NHOST}/g" /etc/hosts && 
-sudo sed -i "s/${CHOST}/${NHOST}/g" /etc/nginx/sites-available/default
-
-sudo reboot
+echo $newhostname | sudo tee /etc/hostname > /dev/null && 
+sudo sed -i "s/$currenthostname/$newhostname/g" /etc/hosts && 
+sudo sed -i "s/$currenthostname/$newhostname/g" /etc/nginx/sites-available/default

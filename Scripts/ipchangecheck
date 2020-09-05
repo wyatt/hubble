@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#IPs
+inetip=$(ip route show | grep -i 'default via'| awk '{print $7}')
+routerip=$(ip route show | grep -i 'default via'| awk '{print $3}')
+hotspotip=$(grep 'ip_address = ' /etc/raspap/networking/wlan1.ini | cut -d\  -f3)
+
+#Current block ranges
+nginxrange=$(cat /etc/nginx/blockips.conf | grep -oP '\d.*\d')
+sshrange=$(cat /etc/hosts.deny | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
+
+#New block ranges
+newssh=$(echo $hotspotip | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
+newnginx="${newssh}0/$(grep 'ip_address = ' /etc/raspap/networking/wlan1.ini | cut -d\/ -f2)"
+
+#Updates IP
+if [ grep -q "<ipaddr>" /etc/dhcpcd.conf ]
+then
+	sed -i "s|<ipaddr>|$inetip|g" /etc/pihole/setupVars.conf
+	sed -i "s|<ipaddr>|$inetip|g" /etc/dhcpcd.conf
+	sed -i "s|<routeripaddr>|$routerip|g" /etc/dhcpcd.conf
+	pihole enable
+	reboot
+fi
+
+#Updates block ranges
+if [ "$APIPR"  != "$APBLOCKIPR" ]
+then
+	sudo sed -i "s/$nginxrange/$newnginx/g" /etc/nginx/blockips
+	sudo sed -i "s/$sshrange/$newssh/g" /etc/hosts.deny
+	reboot
+fi
+
+

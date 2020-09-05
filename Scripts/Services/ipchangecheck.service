@@ -1,0 +1,16 @@
+[Unit]
+Description=Ensure IP addresses match
+Wants=network-online.target
+After=network-online.target
+DefaultDependencies=no
+Before=shutdown.target
+
+[Service]
+User=root
+Type=oneshot
+RemainAfterExit=no 
+ExecStart=/usr/bin/sudo /usr/bin/ipchangecheck
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

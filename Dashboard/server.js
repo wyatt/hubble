@@ -44,7 +44,8 @@ app.get("/", (req, res) => {
 
 app.get("/adapter", () => {
   console.log("Changing adapter");
-  shell.exec("changedongle");
+  shell.exec("/usr/bin/sudo /usr/bin/systemctl enable /etc/systemd/system/install-adapter.service");
+  reboot()
 });
 app.get("/reboot", () => {
   reboot();
@@ -113,6 +114,7 @@ const hostnamechange = (hostname) => {
     if (command.code === 0) {
       console.log(`Changed hostname to ${hostname}`);
       statuses.push(true);
+      reboot()
     } else {
       console.log("Falied to change hostname");
       statuses.push(false);

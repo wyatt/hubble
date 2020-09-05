@@ -1,7 +1,0 @@
-#!bin/bash
-sudo install-wifi
-sudo crontab -l > /tmp/newcrontab
-sudo sed -i "/installdongle/d" /tmp/newcrontab
-sudo crontab /tmp/newcrontab
-sudo rm /tmp/newcrontab
-sudo reboot

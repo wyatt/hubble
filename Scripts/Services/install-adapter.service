@@ -1,0 +1,18 @@
+[Unit]
+Description=Install wifi driver
+Wants=network-online.target
+After=network-online.target
+DefaultDependencies=no
+Before=shutdown.target
+
+[Service]
+User=root
+Type=oneshot
+RemainAfterExit=no 
+ExecStart=/usr/bin/sudo /usr/bin/install-wifi
+ExecStartPost=/usr/bin/sudo /usr/bin/systemctl disable /etc/systemd/system/install-adapter
+ExecStop=/usr/bin/sudo /usr/sbin/reboot
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
