@@ -5,13 +5,27 @@ inetip=$(ip route show | grep -i 'default via'| awk '{print $7}')
 routerip=$(ip route show | grep -i 'default via'| awk '{print $3}')
 hotspotip=$(grep 'ip_address = ' /etc/raspap/networking/wlan1.ini | cut -d\  -f3)
 
-#Current block ranges
-nginxrange=$(cat /etc/nginx/blockips.conf | grep -oP '\d.*\d')
-sshrange=$(cat /etc/hosts.deny | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
-
-#New block ranges
 newssh=$(echo $hotspotip | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
 newnginx="${newssh}0/$(grep 'ip_address = ' /etc/raspap/networking/wlan1.ini | cut -d\/ -f2)"
+
+#Current block ranges
+if [ -f /etc/nginx/blockips ]
+then
+	nginxrange=$(cat /etc/nginx/blockips.conf | grep -oP '\d.*\d')
+	sshrange=$(cat /etc/hosts.deny | grep -oP "(\d{1,}.)(\d{1,}.)(\d{1,}.)")
+	if [ "$newnginx"  != "$nginxrange" ]
+	then	
+		sudo sed -i "s/$nginxrange/$newnginx/g" /etc/nginx/blockips
+		sudo sed -i "s/$sshrange/$newssh/g" /etc/hosts.deny
+		reboot
+	fi
+else
+	echo $newnginx > /etc/nginx/blockips
+	echo $newssh > /etc/hosts.deny
+fi
+
+#New block ranges
+
 
 #Updates IP
 if [ grep -q "<ipaddr>" /etc/dhcpcd.conf ]
@@ -24,11 +38,6 @@ then
 fi
 
 #Updates block ranges
-if [ "$APIPR"  != "$APBLOCKIPR" ]
-then
-	sudo sed -i "s/$nginxrange/$newnginx/g" /etc/nginx/blockips
-	sudo sed -i "s/$sshrange/$newssh/g" /etc/hosts.deny
-	reboot
-fi
+
 
 

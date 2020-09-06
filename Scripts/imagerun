@@ -5,73 +5,96 @@ IP=$(ip route show | grep -i 'default via'| awk '{print $7}')
 ROUTERIP=$(ip route show | grep -i 'default via'| awk '{print $3}')
 intialpassword="secret"
 
-#Add scripts
-#Following git clone
-sudo chmod +x ~/hubble/Scripts/*
-sudo mv ~/hubble/Scripts/* /usr/bin/
-sudo apt install nodejs -y
+#Add package repositories
+# -Yarn
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update -y
-sudo apt install yarn -y
-yarn install -cwd "~/hubble/Dashboard/"
 
-echo "Updating software"
-echo "-----------------"
-sudo apt-get upgrade -y
-sudo SKIP_WARNING=1 rpi-update
-sudo declare rs > /var/run/rebootstage
-sudo reboot now
-echo "Installing software"
-echo "-------------------"
-sudo apt-get install lighttpd usbmount
-sudo wget http://downloads.fars-robotics.net/wifi-drivers/install-wifi -O /usr/bin/install-wifi
-sudo chmod +x /usr/bin/install-wifi
-sudo install-wifi
-echo "Installing RaspAP"
-echo "-----------------"
-curl -sL https://install.raspap.com | bash -s -- -r profwyattb/raspap-webgui -b master -y -o 0
+#Update everything
+apt update -y
+apt upgrade -y
+SKIP_WARNING=1 rpi-update
+sudo reboot
+
+#Install scripts
+for file in /etc/hubble/Scripts/*; do
+    if [ -f "$f" ]; then
+        chmod +x "$f"
+        cp "$f" /usr/bin
+    fi
+done
+
+#Change hostname
+changehostname hubble
+
+#Install dependencies
+apt install lighttpd usbmount nodejs -y
+wget http://downloads.fars-robotics.net/wifi-drivers/install-wifi -O /usr/bin/install-wifi
+chmod +x /usr/bin/install-wifi
+
+#Install yarn
+apt install yarn -y
+yarn install -cwd "/etc/hubble/Dashboard/"
+
+#Install wifi driver
+install-wifi
+
+#Install RaspAP
+curl -sL https://install.raspap.com | bash -s -- -r profwyattb/raspap-webgui -b master -y -o 0 -a 0
 networkingpath=$(php -r 'require_once "/var/www/html/wifi/includes/config.php"; echo RASPI_CONFIG_NETWORKING;')
 raspappath=$(php -r 'require_once "/var/www/html/wifi/includes/config.php"; echo RASPI_CONFIG;')
-sudo sed -i 's/\/app\/img\/wifi-qr-code.php/app\/img\/wifi-qr-code.php/' /var/www/html/guestwifi/templates/hostapd.php
-sudo cp ../Wifi/config/wlan1.ini ${networkingpath}/wlan1
-sudo cp ../Wifi/config/raspap-hostapd.ini ${raspappath}/hostapd.ini
-sudo service hostapd restart
-sudo service raspap restart
-#sudo mv /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
-echo "Installing PiHole"
-echo "-----------------"
-sudo service dnsmasq disable
-echo 'IPV4_ADDRESS="'"$IP"'"' >> setupVars.conf
+mv /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+cp /etc/hubble/Wifi/config/wlan1.ini $networkingpath/wlan1
+cp /etc/hubble/Wifi/config/raspap-hostapd.ini $raspappath/hostapd.ini
+reboot
+
+#Install PiHole
+
+#Remove dnsmasq
+apt remove dnsmasq -y
+rm /etc/systemd/system/dnsmasq.service
+rm /etc/init.d/dnsmasq
+reboot
+
+#Main PiHole install
+echo 'IPV4_ADDRESS="'"$IP"'"' >> /etc/hubble/setupVars.conf
 mkdir /etc/pihole/
-mv setupVars.conf /etc/pihole/setupVars.conf
-sudo ./install.sh --unattended
+mv /etc/hubble/PiHole/setupVars.conf /etc/pihole/setupVars.conf
+sudo /etc/hubble/PiHole/install.sh --unattended
+
+#Making it work
 sudo touch /var/lib/misc/dnsmasq.leases
 sudo chown pihole:pihole /var/lib/misc/dnsmasq.leases
-sudo apt-get install php-sqlite3
+sudo apt install php-sqlite3
 sudo pihole restartdns
 sudo pihole disable
+
+#Configuration for IP addresses
 sudo sed -i "s/IPV4_ADDRESS=.*/IPV4_ADDRESS=<ipaddr>/g" /etc/pihole/setupVars.conf
 sudo sed -i "s|${IP}|<ipaddr>|g" /etc/dhcpcd.conf
 sudo sed -i "s|${ROUTERIP}|<routeripaddr>|g" /etc/dhcpcd.conf
-#Change hostname
-changehostname hubble
+
 #Install nginx
+
 sudo apt-get -y install nginx php7.3-fpm php7.3-cgi php7.3-xml php7.3-sqlite3 php7.3-intl apache2-utils
-~/hubble/Dashboard/node_modules/.bin/pm2 start /home/pi/hubble/Dashboard/server.js
-sudo systemctl disable lighttpd
+/etc/hubble/Dashboard/node_modules/.bin/pm2 start /home/pi/hubble/Dashboard/server.js
+sudo apt remove lighttpd
+sudo rm /etc/systemd/system/lighttpd.service
+sudo rm /etc/init.d/lighttpd
 sudo systemctl enable php7.3-fpm
 sudo systemctl enable nginx
+
 #Need to copy nginx config -> /etc/nginx/sites-available/default
+cp /etc/hubble/Config/nginx.conf /etc/nginx/sites-available/default
 #Need to copy blockips.conf -> /etc/nginx/blockips.conf
 #Need to add sshd : 10.3.141.* -> /etc/hosts.deny
 sudo htpasswd -b -c /etc/nginx/.htpasswd admin $intialpassword
 sudo chown -R www-data:www-data /var/www/html
 sudo chmod -R 755 /var/www/html
 sudo usermod -aG pihole www-data
-~/hubble/Dashboard/node_modules/.bin/pm2 startup systemd
+/etc/hubble/Dashboard/node_modules/.bin/pm2 startup systemd
 sudo env PATH=$PATH:/usr/bin /home/pi/hubble/Dashboard/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi
-~/hubble/Dashboard/node_modules/.bin/pm2 save
+/etc/hubble/Dashboard/node_modules/.bin/pm2 save
 #Add everyboot script
 echo "@reboot sudo everyboot" >> /tmp/newcrontab
 sudo crontab /tmp/newcrontab
