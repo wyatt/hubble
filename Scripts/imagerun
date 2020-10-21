@@ -7,14 +7,14 @@ intialpassword="secret"
 
 #Add package repositories
 # -Yarn
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
 #Update everything
 apt update -y
 apt upgrade -y
 SKIP_WARNING=1 rpi-update
-sudo reboot
+reboot
 
 #Install scripts
 for file in /etc/hubble/Scripts/*; do
@@ -59,61 +59,61 @@ reboot
 #Main PiHole install
 echo 'IPV4_ADDRESS="'"$IP"'"' >> /etc/hubble/setupVars.conf
 mkdir /etc/pihole/
-mv /etc/hubble/PiHole/setupVars.conf /etc/pihole/setupVars.conf
-sudo /etc/hubble/PiHole/install.sh --unattended
+cp /etc/hubble/PiHole/setupVars.conf /etc/pihole/setupVars.conf
+/etc/hubble/PiHole/install.sh --unattended
+cp /etc/hubble/PiHole/gravity.db /etc/pihole/gravity.db
+pihole -g
 
 #Making it work
-sudo touch /var/lib/misc/dnsmasq.leases
-sudo chown pihole:pihole /var/lib/misc/dnsmasq.leases
-sudo apt install php-sqlite3
-sudo pihole restartdns
-sudo pihole disable
+touch /var/lib/misc/dnsmasq.leases
+chown pihole:pihole /var/lib/misc/dnsmasq.leases
+apt install php-sqlite3
+pihole restartdns
+pihole disable
 
 #Configuration for IP addresses
-sudo sed -i "s/IPV4_ADDRESS=.*/IPV4_ADDRESS=<ipaddr>/g" /etc/pihole/setupVars.conf
-sudo sed -i "s|${IP}|<ipaddr>|g" /etc/dhcpcd.conf
-sudo sed -i "s|${ROUTERIP}|<routeripaddr>|g" /etc/dhcpcd.conf
+sed -i "s/IPV4_ADDRESS=.*/IPV4_ADDRESS=<ipaddr>/g" /etc/pihole/setupVars.conf
+sed -i "s|${IP}|<ipaddr>|g" /etc/dhcpcd.conf
+sed -i "s|${ROUTERIP}|<routeripaddr>|g" /etc/dhcpcd.conf
 
 #Install nginx
 
-sudo apt-get -y install nginx php7.3-fpm php7.3-cgi php7.3-xml php7.3-sqlite3 php7.3-intl apache2-utils
+apt-get -y install nginx php7.3-fpm php7.3-cgi php7.3-xml php7.3-sqlite3 php7.3-intl apache2-utils
 /etc/hubble/Dashboard/node_modules/.bin/pm2 start /home/pi/hubble/Dashboard/server.js
-sudo apt remove lighttpd
-sudo rm /etc/systemd/system/lighttpd.service
-sudo rm /etc/init.d/lighttpd
-sudo systemctl enable php7.3-fpm
-sudo systemctl enable nginx
+apt remove lighttpd
+rm /etc/systemd/system/lighttpd.service
+rm /etc/init.d/lighttpd
+systemctl enable php7.3-fpm
+systemctl enable nginx
 
 #Need to copy nginx config -> /etc/nginx/sites-available/default
 cp /etc/hubble/Config/nginx.conf /etc/nginx/sites-available/default
-#Need to copy blockips.conf -> /etc/nginx/blockips.conf
-#Need to add sshd : 10.3.141.* -> /etc/hosts.deny
-sudo htpasswd -b -c /etc/nginx/.htpasswd admin $intialpassword
-sudo chown -R www-data:www-data /var/www/html
-sudo chmod -R 755 /var/www/html
-sudo usermod -aG pihole www-data
-/etc/hubble/Dashboard/node_modules/.bin/pm2 startup systemd
-sudo env PATH=$PATH:/usr/bin /home/pi/hubble/Dashboard/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi
+htpasswd -b -c /etc/nginx/.htpasswd admin $intialpassword
+chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html
+usermod -aG pihole www-data
+
+/etc/hubble/Dashboard/node_modules/.bin/pm2 start /etc/hubble/Dashboard/server.js
 /etc/hubble/Dashboard/node_modules/.bin/pm2 save
-#Add everyboot script
-echo "@reboot sudo everyboot" >> /tmp/newcrontab
-sudo crontab /tmp/newcrontab
-sudo rm /tmp/newcrontab
+/etc/hubble/Dashboard/node_modules/.bin/pm2 startup systemd
+# env PATH=$PATH:/usr/bin /home/pi/hubble/Dashboard/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/pi
+# /etc/hubble/Dashboard/node_modules/.bin/pm2 save
+
 
 #Install docker
 curl -sSL https://get.docker.com | sh
 #Change to admin
-sudo usermod -aG docker pi
-sudo apt-get install -y libffi-dev libssl-dev
-sudo apt-get install -y python3 python3-pip
-sudo apt-get remove python-configparser
+usermod -aG docker pi
+apt install -y libffi-dev libssl-dev
+apt install -y python3 python3-pip
+apt remove python-configparser
 
 #Docker install
-sudo mkdir /home/pi/app/
-sudo chown -R www-data:www-data /home/pi/app/
+mkdir /etc/hubble/File\ server/app/
+chown -R www-data:www-data /etc/hubble/File\ server/app/
 docker-compose up -d
-sudo docker exec -u www-data nextcloud php /var/www/html/occ app:enable files_external
-sudo apt-get install usbmount jq
-sudo chmod +x /home/pi/hubble/File\ server/Automounting/* 
-sudo cp /home/pi/hubble/File\ server/Automounting/mount.sh /etc/usbmount/mount.d/mount
-sudo cp /home/pi/hubble/File\ server/Automounting/unmount.sh /etc/usbmount/umount.d/unmount
+docker exec -u www-data nextcloud php /var/www/html/occ app:enable files_external
+apt install usbmount jq
+chmod +x /home/pi/hubble/File\ server/Automounting/* 
+cp /home/pi/hubble/File\ server/Automounting/mount.sh /etc/usbmount/mount.d/mount
+cp /home/pi/hubble/File\ server/Automounting/unmount.sh /etc/usbmount/umount.d/unmount
